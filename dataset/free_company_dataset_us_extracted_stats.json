@@ -1,0 +1,28 @@
+{
+    "total_rows_before_extraction": 23695317,
+    "total_rows_after_extraction": 6297477,
+    "column_names": [
+        "country",
+        "founded",
+        "id",
+        "industry",
+        "linkedin_url",
+        "locality",
+        "name",
+        "region",
+        "size",
+        "website"
+    ],
+    "nan_counts_per_column": {
+        "country": 0,
+        "founded": 3804096,
+        "id": 0,
+        "industry": 1461809,
+        "linkedin_url": 0,
+        "locality": 376264,
+        "name": 1,
+        "region": 142919,
+        "size": 0,
+        "website": 1922899
+    }
+}
