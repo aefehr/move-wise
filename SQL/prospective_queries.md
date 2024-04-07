@@ -59,3 +59,65 @@ GROUP BY r.city, r.state
 HAVING j.average_salary > AveragePrice * 12  -- Assuming a desired ratio
 ORDER BY j.average_salary - AveragePrice DESC;
 ```
+
+# 5. Find Top Employers in a City
+Returns the name, founded year, industry, size, website, and LinkedIn URL of the top 10 employers in San Francisco, California.
+```SQL
+SELECT
+    c.name,
+    c.founded,
+    c.industry,
+    c.size,
+    c.website,
+    c.linkedin_url
+FROM
+    Companies c
+WHERE
+    c.id IN (
+        SELECT
+            company_id
+        FROM
+            Top_Employers_by_US_Metro
+        WHERE
+            metro = 'san francisco, california'
+    );
+```
+
+# 6. 
+Returns the 10 cities with the lowest cost of living index such that one of their top ten employers is in the technology industry. Returns the cities and employer(s)
+```SQL
+WITH TechnologyEmployers AS (
+    SELECT
+        metro,
+        company_id
+    FROM
+        Top_Employers_by_US_Metro
+    WHERE
+        metro IN (SELECT City FROM Cost_of_Living)
+    AND
+        company_id IN (SELECT id FROM Companies WHERE industry = 'technology')
+),
+LowestCostCitiesWithTech AS (
+    SELECT
+        COL.city,
+        COL.cost_of_living_index,
+        TE.company_id
+    FROM
+        cost_of_living COL
+    JOIN
+        TechnologyEmployers TE ON COL.city = TE.metro
+    ORDER BY
+        COL.cost_of_living_index
+)
+SELECT
+    LCT.city,
+    LCT.cost_of_living_index,
+    C.name AS CompanyName,
+    C.industry
+FROM
+    LowestCostCitiesWithTech LCT
+JOIN
+    Companies C ON LCT.company_id = C.id
+ORDER BY
+    LCT.cost_of_living_index, C.name;
+```
