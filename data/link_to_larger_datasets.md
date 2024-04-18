@@ -1,7 +1,9 @@
 
 # Link to Large_Datasets folder
 ## https://drive.google.com/drive/folders/1Pj0Mhivax1mpxFyQ-Eirc_v8GVJ8AhO4?usp=sharing
-This folder contains datasets with sizes larger than can be uploaded on GitHub.
+This folder contains datasets with sizes larger than can be uploaded on GitHub. In there you will find 
+* processed-companies.csv
+* processed-real-estate-listings.csv
 
 ## Global company:
 * [Original data source](http://www.peopledatalabs.com/company-dataset)
