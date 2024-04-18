@@ -1,4 +1,4 @@
-city,state,Cost of Living Index,Rent Index,Groceries Index,Restaurant Price Index,Local Purchasing Power Index
+city,state,cost_of_living_index,rent_index,groceries_index,restaurant_price_index,local_purchasing_power_index
 Honolulu,Hawaii,103.65,65.07,114.92,94.28,89.24
 New York,New York,100.0,100.0,100.0,100.0,100.0
 Santa Barbara,California,95.01,78.42,99.53,99.41,93.86
