@@ -1,0 +1,10 @@
+{
+    "database": {
+      "host": "move-wise-dev.cvpbaqyu2pl4.us-east-1.rds.amazonaws.com",
+      "port": 3306,
+      "user": "admin",
+      "password": "lCHcbynXycHtKd8H0bmT",
+      "database": "MOVE_WISE_DB"
+    }
+  }
+  
