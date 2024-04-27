@@ -1,0 +1,127 @@
+// sass and scss allow for nested style entries by relation
+@import "../../responsive.scss";
+
+nav {
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    a {
+        transition: all 0.4s ease;
+
+        // fn sm from responsive.scss
+        @include sm {
+            display: none;
+        }
+
+        &:hover {
+            scale: 1.1;
+        }
+    }
+
+    .left {
+        flex: 3;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        gap: 50px;
+
+        @include sm {
+            background-color: antiquewhite;
+        }
+
+        .logo {
+            font-weight: bold;
+            font-size: 20px;
+            // font-family: "Verdana", monospace;
+            display: flex;
+            gap: 5px;
+            align-items: center;
+
+
+            img {
+                width: 100px;
+            }
+
+            // display properties of logo component based on viewport size
+            span {
+                @include md {
+                    display: none;
+                }
+
+                @include sm {
+                    display: initial;
+                    background-color: antiquewhite;
+                }
+            }
+        }
+    }
+
+    .right {
+        flex: 2;
+        background-color: aquamarine;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        height: 100%;
+
+        @include md {
+            background-color: transparent;
+        }
+
+        a {
+            padding: 12px 24px;
+            margin: 20px;
+        }
+
+        .register {
+            background-color: mediumorchid;
+        }
+
+        .menuIcon {
+            display: none;
+            z-index: 999;
+            transition: all 0.4s ease;
+
+            img {
+                width: 36px;
+                height: 36px;
+                cursor: pointer;
+            }
+
+            @include sm {
+                display: inline;
+            }
+
+            &:hover {
+                scale: 1.1;
+            }
+        }
+
+        .menu {
+            position: absolute;
+            top: 0;
+            right: -50%; // hide it out main screen
+            background-color: black;
+            color: white;
+            height: 100vh;
+            width: 50%;
+            transition: all 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+
+            &.active {
+                right: 0;
+            }
+
+            @include sm {
+                a {
+                    display: initial;
+                }
+            }
+        }
+    }
+}
