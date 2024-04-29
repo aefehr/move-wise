@@ -18,6 +18,8 @@ app.get('/top_fortune_1000_cities', routes.top_fortune_1000_cities);
 app.get('/most_improved_companies', routes.most_improved_companies);
 app.get('/most_improved_sectors', routes.most_improved_sectors);
 
+app.get('/lcol_cities_by_sector', routes.lcol_cities_by_sector);
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}/`)
 });
