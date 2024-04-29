@@ -71,6 +71,56 @@ const fortune_1000_company_info = async (req, res) => {
 
 /* Routes for general company page */
 
+// GET /fortune_1000_companies
+// Returns the Fortune 1000 companies by current rank with optional filters for sector or city and state
+const fortune_1000_companies = async (req, res) => {
+    const { sector, city, state } = req.query; // Using query parameters for optional filtering
+
+    let query = `
+        SELECT f.company_name, f.curr_rank, c.city, c.state, f.sector, f.website
+        FROM fortune_1000 f
+        JOIN city c ON f.city_id = c.id
+    `;
+
+    let conditions = [];
+    let params = [];
+
+    // Add conditions based on provided query parameters
+    if (sector) {
+        conditions.push("f.sector = ?");
+        params.push(sector);
+    }
+    if (city && state) {
+        conditions.push("c.city = ? AND c.state = ?");
+        params.push(city, state);
+    } else if (city) {
+        conditions.push("c.city = ?");
+        params.push(city);
+    } else if (state) {
+        conditions.push("c.state = ?");
+        params.push(state);
+    }
+
+    if (conditions.length) {
+        query += ` WHERE ${conditions.join(" AND ")}`;
+    }
+
+    query += ` ORDER BY f.curr_rank ASC `;
+
+    try {
+        const [results] = await pool.query(query, params);
+        if (results.length > 0) {
+            res.json(results);
+        } else {
+            res.status(404).send('No matching companies found.');
+        }
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching top companies');
+    }
+};
+
+
 // GET /top_fortune_1000_cities
 // Returns cities with the most Fortune 1000 companies
 const top_fortune_1000_cities = async (req, res) => {
@@ -115,6 +165,7 @@ const most_improved_companies = async (req, res) => {
   module.exports = {
     city_fortune_1000_companies,
     fortune_1000_company_info,
+    fortune_1000_companies,
     top_fortune_1000_cities,
     most_improved_companies
   };
