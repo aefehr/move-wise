@@ -91,10 +91,31 @@ const top_fortune_1000_cities = async (req, res) => {
     }
 };
 
+// GET /most-improved-companies
+// Returns companies that have the most significant rank improvement
+const most_improved_companies = async (req, res) => {
+    try {
+        const query = `
+            SELECT company_name, prev_rank, curr_rank, (prev_rank - curr_rank) AS rank_improvement
+            FROM fortune_1000
+            WHERE prev_rank != 0 AND curr_rank != 0
+            ORDER BY rank_improvement DESC
+            LIMIT 10;
+        `;
+        const [results] = await pool.query(query);
+        res.json(results);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching most improved companies');
+    }
+};
+
+
   
   module.exports = {
     city_fortune_1000_companies,
     fortune_1000_company_info,
-    top_fortune_1000_cities
+    top_fortune_1000_cities,
+    most_improved_companies
   };
 

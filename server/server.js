@@ -14,6 +14,7 @@ app.get('/city_fortune_1000_companies/:city/:state', routes.city_fortune_1000_co
 app.get('/fortune_1000_company_info/:company_name', routes.fortune_1000_company_info);
 
 app.get('/top_fortune_1000_cities', routes.top_fortune_1000_cities);
+app.get('/most_improved_companies', routes.most_improved_companies);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}/`)
