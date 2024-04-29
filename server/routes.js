@@ -160,6 +160,32 @@ const most_improved_companies = async (req, res) => {
     }
 };
 
+// GET /most_improved_sectors
+// Returns the top 5 sectors with the most average rank improvement
+const most_improved_sectors = async (req, res) => {
+    try {
+        const query = `
+            SELECT 
+                sector, 
+                AVG(prev_rank - curr_rank) AS avg_rank_improvement
+            FROM fortune_1000
+            WHERE prev_rank > 0 AND curr_rank > 0 AND prev_rank != curr_rank
+            GROUP BY sector
+            ORDER BY avg_rank_improvement DESC
+            LIMIT 5;
+        `;
+        const [results] = await pool.query(query);
+        if (results.length > 0) {
+            res.json(results);
+        } else {
+            res.status(404).send('No data found for sector rank improvements.');
+        }
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching sector rank improvements');
+    }
+};
+
 
   
   module.exports = {
@@ -167,6 +193,7 @@ const most_improved_companies = async (req, res) => {
     fortune_1000_company_info,
     fortune_1000_companies,
     top_fortune_1000_cities,
-    most_improved_companies
+    most_improved_companies,
+    most_improved_sectors
   };
 
