@@ -34,7 +34,7 @@ const city_fortune_1000_companies = async (req, res) => {
   };
 
 
-  /* Routes for specific (fortune 1000) company page */
+/* Routes for specific (fortune 1000) company page */
 
 // GET /fortune_1000_company_info/:company_name
 // Returns information about a specific company in Fortune 1000 list 
@@ -68,9 +68,33 @@ const fortune_1000_company_info = async (req, res) => {
     }
   };
 
+
+/* Routes for general company page */
+
+// GET /top_fortune_1000_cities
+// Returns cities with the most Fortune 1000 companies
+const top_fortune_1000_cities = async (req, res) => {
+    try {
+        const query = `
+            SELECT c.city, c.state, COUNT(f.id) AS company_count
+            FROM city c
+            JOIN fortune_1000 f ON c.id = f.city_id
+            GROUP BY c.city, c.state
+            ORDER BY company_count DESC
+            LIMIT 10;
+        `;
+        const [results] = await pool.query(query);
+        res.json(results);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching top cities');
+    }
+};
+
   
   module.exports = {
     city_fortune_1000_companies,
-    fortune_1000_company_info
+    fortune_1000_company_info,
+    top_fortune_1000_cities
   };
 
