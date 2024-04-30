@@ -34,6 +34,49 @@ const city_fortune_1000_companies = async (req, res) => {
   };
 
 
+// GET /city_company_stats/:city/:state
+// Returns total number of companies in specific city and top 5 most popular industries
+const city_company_stats = async (req, res) => {
+    const { city, state } = req.params;
+    try {
+        const sql = `
+            SELECT
+                c.city,
+                c.state,
+                COUNT(*) AS total_companies,
+                (
+                    SELECT GROUP_CONCAT(industry ORDER BY count DESC SEPARATOR ', ')
+                    FROM (
+                        SELECT industry, COUNT(*) AS count
+                        FROM company
+                        WHERE city_id = c.id
+                        GROUP BY industry
+                        ORDER BY count DESC
+                        LIMIT 5
+                    ) AS subquery
+                ) AS top_industries
+            FROM
+                city c
+            JOIN
+                company co ON c.id = co.city_id
+            WHERE
+                c.city = ? AND c.state = ?
+            GROUP BY
+                c.city, c.state;
+        `;
+
+        const results = await pool.query(sql, [city, state]);
+        if (results[0].length > 0) {
+            res.json(results[0][0]);
+        } else {
+            res.status(404).send('No companies found for the specified city and state.');
+        }
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching company data');
+    }
+};
+
 /* Routes for specific (fortune 1000) company page */
 
 // GET /fortune_1000_company_info/:company_name
@@ -233,6 +276,7 @@ const lcol_cities_by_sector = async (req, res) => {
   
   module.exports = {
     city_fortune_1000_companies,
+    city_company_stats,
     fortune_1000_company_info,
     fortune_1000_companies,
     top_fortune_1000_cities,

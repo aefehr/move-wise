@@ -11,6 +11,8 @@ app.use(cors({
 app.use(express.json()); 
 
 app.get('/city_fortune_1000_companies/:city/:state', routes.city_fortune_1000_companies);
+app.get('/city_company_stats/:city/:state', routes.city_company_stats);
+
 app.get('/fortune_1000_company_info/:company_name', routes.fortune_1000_company_info);
 
 app.get('/fortune_1000_companies', routes.fortune_1000_companies);
