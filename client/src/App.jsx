@@ -29,7 +29,7 @@ function App() {
                 element:<SinglePage/>
             },
             {
-                path: "/browse_city",
+                path: "/browse_cities",
                 element:<GeneralCityPage/>
             }
             

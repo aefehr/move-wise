@@ -1,18 +1,17 @@
 import './generalCityPage.scss'
-import Filter from "../../components/filterListing/FilterListing"
+import Filter from "../../components/FilterListing/FilterListing"
 import Card from "../../components/card/Card"
 import Map from "../../components/map/Map";
-
-function GeneralCityPage(){
-    const handleSearch = (searchTerm) => {
-    console.log("Search Term:", searchTerm);
-    
+import FilterCity from '../../components/FilterCity/FilterCity';
+function GeneralCityPage() {
+  const handleCityFilter = (filterTerm) => {
+    console.log("Filter Term:", filterTerm);
+    // Add functionality to modify what is displayed on the map based on the filter
   };
+
   return (
     <div className='generalCityPage'>
-      <div className='searchBar'>
-        <input type="text" placeholder="Search or filter" onChange={(e) => handleSearch(e.target.value)} />
-      </div>
+      <FilterCity onFilterChange={handleCityFilter} />
       <div className='mapContainer'>
         <Map items={[]} latitude={39.8283} longitude={-98.5795} zoom={5} />
       </div>
@@ -20,4 +19,4 @@ function GeneralCityPage(){
   );
 }
 
-export default GeneralCityPage
+export default GeneralCityPage;
