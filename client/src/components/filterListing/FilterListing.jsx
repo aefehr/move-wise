@@ -1,7 +1,7 @@
-import './filter.scss'
+import './FilterListing.scss'
 // Top would be the result
 // Bottom would be the filter
-function Filter(){
+function FilterListing(){
   return (
     <div className='filter'>
         <h1>Search results for <b>London</b></h1>
@@ -58,4 +58,4 @@ function Filter(){
   )
 }
 
-export default Filter;
+export default FilterListing;

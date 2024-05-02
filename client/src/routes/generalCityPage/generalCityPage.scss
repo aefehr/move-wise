@@ -1,0 +1,23 @@
+@import "../../responsive.scss";
+
+.generalCityPage {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .searchBar {
+        flex: 1;
+        padding: 20px;
+
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+        }
+    }
+
+    .mapContainer {
+        flex: 2;
+        height: 100%;
+    }
+}

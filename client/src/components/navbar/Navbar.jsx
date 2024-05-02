@@ -13,9 +13,9 @@ function Navbar() {
                     <span>Move Wise</span>
                 </a>
                 <a href="/">Home</a>
-                <a href="/">About</a>
-                <a href="/">Contact</a>
-                <a href="/">Agent</a>
+                <a href="/">Cities</a>
+                <a href="/">Companies</a>
+                <a href="/">Recommender</a>
             </div>
             <div className="right">
                 <a href="/">Sign in</a>
