@@ -6,9 +6,9 @@ function HomePage(){
     <div className='homePage'>
         <div className="textContainer">            
             <div className="wrapper"> 
-                <h1 className='title'>Move Wise - Relocation Assistance with Insights</h1>
+                <h1 className='title'>Relocation Assistance with Insights</h1>
                 <p>
-                    This tool simplifies the relocation decision-making process for job seekers by providing a dashboard that combines real estate and rental market insights across different U.S. cities/regions with information about companies located in these regions and job market details
+                    Explore your ideal home, with information about jobs, cost of living, and more!
                 </p>
                 <SearchBar/>
                 <div className="boxes">

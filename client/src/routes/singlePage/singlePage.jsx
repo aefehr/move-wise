@@ -1,6 +1,6 @@
 import './singlePage.scss'
 import Slider from "../../components/slider/Slider"
-import { singlePostData,userData } from '../../lib/dummydata'
+import { singlePostData, userData } from '../../lib/dummydata'
 import Map from '../../components/map/Map'
 import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
 // Skipping slider as its not relevant to our usecase
@@ -100,7 +100,7 @@ function SinglePage(){
                 </div>
                 <p className="title">Locations</p>
                 <div className="mapContainer">
-                    <Map items={[singlePostData]}/>
+                    <Map items={[singlePostData]} latitude={39.9526} longitude={-75.1652}/>
                 </div>
                 <div className="buttons">
                     <button>
