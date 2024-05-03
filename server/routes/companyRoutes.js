@@ -2,27 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../database'); // Adjust the path to your database configuration
 
-// Returns total number of companies in a specific city, top 5 most popular industries, average company founded year, and number of companies founded in past 2 years
-router.get('/city_company_stats/:city/:state', async (req, res) => {
-    const { city, state } = req.params;
-    try {
-        const sql = `
-            SELECT * 
-            FROM city_statistics 
-            WHERE city = ? AND state = ?;
-        `;
-
-        const results = await pool.query(sql, [city, state]);
-        if (results[0].length > 0) {
-            res.json(results[0][0]);
-        } else {
-            res.status(404).send('No companies found for the specified city and state.');
-        }
-    } catch (error) {
-        console.error('Database query error:', error);
-        res.status(500).send('Server error occurred while fetching company data');
-    }
-});
+/* Routes for specific company page */
 
 // Returns information about a specific company in Fortune 1000 list 
 router.get('/fortune_1000_company_info/:company_name', async (req, res) => {
@@ -57,7 +37,56 @@ router.get('/fortune_1000_company_info/:company_name', async (req, res) => {
 
 
 
-/* Routes for general company page */
+/* Routes for Company Directory */
+
+// Returns the Fortune 1000 companies by current rank with optional filters for sector or city and state
+router.get('/fortune_1000_companies', async (req, res) => {
+    const { sector, city, state } = req.query; // Using query parameters for optional filtering
+
+    let query = `
+        SELECT f.company_name, f.curr_rank, c.city, c.state, f.sector, f.website
+        FROM fortune_1000 f
+        JOIN city c ON f.city_id = c.id
+    `;
+
+    let conditions = [];
+    let params = [];
+
+    // Add conditions based on provided query parameters
+    if (sector) {
+        conditions.push("f.sector = ?");
+        params.push(sector);
+    }
+    if (city && state) {
+        conditions.push("c.city = ? AND c.state = ?");
+        params.push(city, state);
+    } else if (city) {
+        conditions.push("c.city = ?");
+        params.push(city);
+    } else if (state) {
+        conditions.push("c.state = ?");
+        params.push(state);
+    }
+
+    if (conditions.length) {
+        query += ` WHERE ${conditions.join(" AND ")}`;
+    }
+
+    query += ` ORDER BY f.curr_rank ASC `;
+
+    try {
+        const [results] = await pool.query(query, params);
+        if (results.length > 0) {
+            res.json(results);
+        } else {
+            res.status(404).send('No matching companies found.');
+        }
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching top companies');
+    }
+});
+
 
 // Returns companies that have the most significant rank improvement
 router.get('/most-improved-companies', async (req, res) => {

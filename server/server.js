@@ -14,7 +14,9 @@ const PORT = 8000;
 app.use(cors({
     origin: 'http://localhost:5173', // Consider specifying allowed origins in production for security
 }));
+
 app.use(express.json());
+
 
 // Use cityRoutes for city-related API endpoints
 app.use('/api/cities', cityRoutes);
