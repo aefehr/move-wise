@@ -6,15 +6,16 @@ const pool = require('../database');  // Ensure the correct path to your databas
 router.get('/', async (req, res) => {
     try {
         const query = `
-            SELECT DISTINCT
-                c.id, 
-                c.city, 
-                c.state, 
-                u.lat AS latitude, 
+        SELECT  c.city,
+                MIN(c.id),
+                c.state,
+                u.lat AS latitude,
                 u.lng AS longitude
-            FROM city c
-            JOIN uszips u ON c.city = u.city AND c.state = u.state_name
-            JOIN fortune_1000 f ON c.id = f.city_id
+        FROM city c
+        JOIN uszips u ON c.city = u.city 
+            AND c.state = u.state_name
+        JOIN fortune_1000 f ON c.id = f.city_id
+        GROUP BY c.city;
         `;
         const [results] = await pool.query(query);
         res.json(results);
