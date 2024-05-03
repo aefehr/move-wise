@@ -5,6 +5,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
+import Tooltip from '@mui/material/Tooltip';
 import './FilterCity.scss';
 
 function FilterCity({ onFilterChange }) {
@@ -33,7 +34,6 @@ function FilterCity({ onFilterChange }) {
   };
 
   const handleShowTopTen = () => {
-    // Implement or trigger logic to show top 10 results
     console.log("Showing Top 10");
   };
 
@@ -60,12 +60,16 @@ function FilterCity({ onFilterChange }) {
         </Grid>
         <Grid item xs={4}>
           <Box display="flex" flexDirection="column" height="100%" justifyContent="space-between">
-            <Button className='search' onClick={handleSubmit} variant="contained" color="primary" fullWidth>
-              Search
-            </Button>
-            <Button className='top' onClick={handleShowTopTen} variant="outlined" color="primary" fullWidth>
-              Show Top 10
-            </Button>
+            <Tooltip title="Click to search with the specified filters">
+              <Button className='search' onClick={handleSubmit} variant="contained" color="primary" fullWidth>
+                Search
+              </Button>
+            </Tooltip>
+            <Tooltip title="Show the top 10 best best results regardless of filters">
+              <Button className='top' onClick={handleShowTopTen} variant="outlined" color="primary" fullWidth>
+                Show Top 10
+              </Button>
+            </Tooltip>
           </Box>
         </Grid>
       </Grid>

@@ -1,0 +1,17 @@
+.cityPage {
+    .unsplash-image-fetcher {
+        flex: 2;
+
+        img {
+            width: 100%;
+            max-height: 100%;
+            object-fit: cover; // Ensures image covers the area properly
+            border-radius: 0; // Adjust as per design requirements
+        }
+    }
+
+    .info-section {
+        background-color: #f5f5f5; // Light grey background for the info section
+        padding: 20px; // Spacing inside the info section
+    }
+}
