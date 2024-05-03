@@ -24,6 +24,7 @@ app.get('/most_improved_companies', routes.most_improved_companies);
 app.get('/most_improved_sectors', routes.most_improved_sectors);
 
 app.get('/lcol_cities_by_sector', routes.lcol_cities_by_sector);
+app.get('/top_startup_cities', routes.top_startup_cities);
 
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}/`)

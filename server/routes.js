@@ -358,6 +358,34 @@ const lcol_cities_by_sector = async (req, res) => {
 };
 
 
+// GET /top_startup_cities
+// Returns top 10 cities with the highest number of startups (new companies in past 5 years) 
+// and their cost of living and popular industries
+const top_startup_cities = async (req, res) => {
+    try {
+        const query = `
+            SELECT
+                city,
+                state,
+                total_new_startups,
+                avg_col_index,
+                popular_industries
+            FROM city_startup_data
+            ORDER BY total_new_startups DESC, avg_col_index
+            LIMIT 10;
+        `;
+        const [results] = await pool.query(query);  // Assuming pool.query uses Promises; adjust if using callbacks
+        if (results.length) {
+            res.json(results);
+        } else {
+            res.status(404).send('No cities found with significant startup activity.');
+        }
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching top startup cities');
+    }
+};
+
 
 module.exports = {
     city_fortune_1000_companies,
@@ -370,6 +398,7 @@ module.exports = {
     top_fortune_1000_cities,
     most_improved_companies,
     most_improved_sectors,
-    lcol_cities_by_sector
+    lcol_cities_by_sector,
+    top_startup_cities
 };
 
