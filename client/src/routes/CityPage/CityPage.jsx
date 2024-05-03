@@ -20,7 +20,7 @@ function CityPage() {
       {tabValue === 'realEstate' && <ListPage />}
       {tabValue === 'cityInfo' && (
         <Box sx={{ display: 'flex', height: 'calc(100vh - 48px)' }}> {/* Adjust height to account for tab height */}
-          <UnsplashImageFetcher keyword="Japan" />
+          <UnsplashImageFetcher keyword="Philly"/>
           <Box className="info-section" sx={{ flex: 1, overflowY: 'auto', padding: 2 }}>
             {/* Placeholder for statistics or additional info */}
             <h1>City Details</h1>
