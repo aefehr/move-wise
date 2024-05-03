@@ -1,6 +1,5 @@
 import { listData } from "../../lib/dummydata";
 import "./listPage.scss";
-import Filter from "../../components/FilterListing/FilterListing"
 import Card from "../../components/card/Card"
 import Map from "../../components/map/Map";
 import FilterListing from "../../components/FilterListing/FilterListing";

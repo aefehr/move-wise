@@ -1,0 +1,19 @@
+.unsplash-image-fetcher {
+    display: flex;
+    flex: 2;
+    align-items: center; // Centers the image vertically
+    justify-content: center; // Centers the image horizontally
+
+    img {
+        max-width: 100%; // Ensures the image does not exceed the container's width
+        max-height: 100vh; // Uses full viewport height
+        border-radius: 8px;
+        object-fit: cover; // Ensures the image covers the area without distorting aspect ratio
+    }
+}
+
+.stat-table-container {
+    flex: 1; // Takes up 1/3 of the space
+    padding: 20px; // Adds some padding around the table or content
+    overflow-y: auto; // Allows scrolling if the content exceeds the viewport height
+}

@@ -71,6 +71,7 @@
         position: relative;
         display: flex;
         align-items: center;
+        border-radius: 20px;
 
         @include md {
             display: none;

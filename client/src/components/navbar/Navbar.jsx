@@ -15,7 +15,7 @@ function Navbar() {
                 <a href="/">Home</a>
                 <a href="/">Cities</a>
                 <a href="/">Companies</a>
-                <a href="/">Recommender</a>
+                <a href="/">Market Explorer</a>
             </div>
             <div className="right">
                 <a href="/">Sign in</a>
@@ -29,9 +29,9 @@ function Navbar() {
                 </div>
                 <div className={open ? "menu active" : "menu"}>
                     <a href="/">Home</a>
-                    <a href="/">About</a>
-                    <a href="/">Contact</a>
-                    <a href="/">Agent</a>
+                    <a href="/">Cities</a>
+                    <a href="/">Companies</a>
+                    <a href="/">Market Explorer</a>
                     <a href="/">Sign in</a>
                     <a href="/">Sign up</a>
                 </div>
