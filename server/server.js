@@ -12,6 +12,9 @@ app.use(express.json());
 
 app.get('/city_fortune_1000_companies/:city/:state', routes.city_fortune_1000_companies);
 app.get('/city_company_stats/:city/:state', routes.city_company_stats);
+app.get('/city_col_stats/:city/:state', routes.city_col_stats);
+app.get('/city_rel_stats/:city/:state', routes.city_rel_stats);
+app.get('/city_company_rank/:city/:state', routes.city_company_rank);
 
 app.get('/fortune_1000_company_info/:company_name', routes.fortune_1000_company_info);
 
