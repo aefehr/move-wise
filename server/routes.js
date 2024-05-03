@@ -386,6 +386,45 @@ const top_startup_cities = async (req, res) => {
     }
 };
 
+// GET /low_home_price_cities_by_index
+// Returns top 5 cities with the lowest average real estate prices and user-selected cost of living index
+const low_home_price_cities_by_index = async (req, res) => {
+    const indexChoice = req.query.indexChoice;  // This will get the index from a query parameter
+
+    // Map user input to actual database columns securely
+    const validIndexes = {
+        'Cost of Living Index': 'cost_of_living_index',
+        'Rent Index': 'rent_index',
+        'Groceries Index': 'groceries_index',
+        'Restaurant Price Index': 'restaurant_price_index',
+        'Local Purchasing Power Index': 'local_purchasing_power_index'
+    };
+
+    const selected_index = validIndexes[indexChoice] 
+
+    try {
+        const query = `
+            SELECT
+                city,
+                state,
+                dominant_sectors,
+                average_real_estate_price,
+                ${selected_index} AS selected_index_value
+            FROM city_real_estate_with_index_data
+            ORDER BY average_real_estate_price ASC, selected_index_value ASC
+            LIMIT 5;
+        `;
+        const [results] = await pool.query(query);  
+        if (results.length) {
+            res.json(results);
+        } else {
+            res.status(404).send('No affordable cities found with the selected cost of living index.');
+        }
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching top affordable cities');
+    }
+};
 
 module.exports = {
     city_fortune_1000_companies,
@@ -399,6 +438,7 @@ module.exports = {
     most_improved_companies,
     most_improved_sectors,
     lcol_cities_by_sector,
-    top_startup_cities
+    top_startup_cities,
+    low_home_price_cities_by_index
 };
 
