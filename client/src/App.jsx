@@ -11,6 +11,7 @@ import SinglePage from "./routes/singlePage/singlePage";
 import GeneralCityPage from "./routes/generalCityPage/generalCityPage";
 
 import CityPage from "./routes/CityPage/CityPage";
+import CompanyPage from "./routes/CompanyPage/CompanyPage";
 
 function App() {
     const router = createBrowserRouter([
@@ -37,6 +38,10 @@ function App() {
                 {
                     path: "/city_info", // City information page route
                     element: <CityPage />
+                },
+                {
+                    path: "/companies/:company_name", // Company page route
+                    element: <CompanyPage />
                 }
 
             ]
