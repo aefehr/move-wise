@@ -125,7 +125,7 @@ router.get('/city_rel_stats/:city/:state', async (req, res) => {
     try {
         const sql = `
             SELECT MAX(price) AS max_price, MIN(price) AS min_price, AVG(price) AS avg_price
-            FROM real_estate_listing rel
+            FROM real_estate_listing_2 rel
             JOIN city c ON rel.city_id = c.id
             WHERE c.city = ? AND c.state = ?
             GROUP BY c.city, c.state;
@@ -200,4 +200,98 @@ router.get('/top_fortune_1000_cities', async (req, res) => {
     }
 });
 
+/* Returns top 10 cities with the highest COL */
+router.get('/top_cities_highest_col', async (req, res) => {
+    try {
+        const sql = `
+            SELECT c.city, c.state, col.cost_of_living_index
+            FROM city c
+            JOIN cost_of_living col ON c.id = col.city_id
+            ORDER BY col.cost_of_living_index DESC
+            LIMIT 10;
+        `;
+        const [results] = await pool.query(sql);
+        res.json(results);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching top cities with highest COL');
+    }
+});
+
+/* Returns top 10 cities with the lowest COL */
+router.get('/top_cities_lowest_col', async (req, res) => {
+    try {
+        const sql = `
+            SELECT c.city, c.state, col.cost_of_living_index
+            FROM city c
+            JOIN cost_of_living col ON c.id = col.city_id
+            ORDER BY col.cost_of_living_index ASC
+            LIMIT 10;
+        `;
+        const [results] = await pool.query(sql);
+        res.json(results);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching top cities with lowest COL');
+    }
+});
+
+/* Returns top 10 cities with highest average real estate price */
+router.get('/top_cities_highest_avg_re_price', async (req, res) => {
+    try {
+        const sql = `
+            SELECT c.city, c.state, AVG(rel.price) AS avg_price
+            FROM city c
+            JOIN real_estate_listing_2 rel ON c.id = rel.city_id
+            GROUP BY c.city, c.state
+            ORDER BY avg_price DESC
+            LIMIT 10;
+        `;
+        const [results] = await pool.query(sql);
+        res.json(results);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching top cities with highest average real estate price');
+    }
+});
+
+/* Returns top 10 cities with lowest average real estate price */
+router.get('/top_cities_lowest_avg_re_price', async (req, res) => {
+    try {
+        const sql = `
+            SELECT c.city, c.state, AVG(rel.price) AS avg_price
+            FROM city c
+            JOIN real_estate_listing_2 rel ON c.id = rel.city_id
+            WHERE rel.price IS NOT NULL AND rel.price > 1
+            GROUP BY c.city, c.state
+            ORDER BY avg_price ASC
+            LIMIT 10;
+        `;
+        const [results] = await pool.query(sql);
+        res.json(results);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching top cities with lowest average real estate price');
+    }
+});
+
+/* Returns top 10 cities with the most companies founded in the last year */
+router.get('/top_cities_most_new_companies', async (req, res) => {
+    try {
+        const sql = `
+            SELECT c.city, c.state, COUNT(co.id) AS new_company_count
+            FROM city c
+            JOIN company co ON c.id = co.city_id
+            WHERE co.founded = YEAR(CURDATE()) OR co.founded = YEAR(CURDATE()) - 1
+            GROUP BY c.city, c.state
+            ORDER BY new_company_count DESC
+            LIMIT 10;
+        `;
+        const [results] = await pool.query(sql);
+        res.json(results);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching top cities with most new companies');
+    }
+});
 module.exports = router;

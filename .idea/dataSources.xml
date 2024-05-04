@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
+    <data-source source="LOCAL" name="MOVE_WISE_DB@move-wise-dev.cvpbaqyu2pl4.us-east-1.rds.amazonaws.com" uuid="53e18927-5f78-4120-bd63-e3d1a3e98152">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://move-wise-dev.cvpbaqyu2pl4.us-east-1.rds.amazonaws.com:3306/MOVE_WISE_DB</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
+  </component>
+</project>
