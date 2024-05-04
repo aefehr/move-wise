@@ -36,7 +36,7 @@ function App() {
                     element: <GeneralCityPage />
                 },
                 {
-                    path: "/city_info", // City information page route
+                    path: "/city_info/:city/:state", // City information page route
                     element: <CityPage />
                 },
                 {
