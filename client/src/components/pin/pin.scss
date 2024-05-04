@@ -12,6 +12,23 @@
         flex-direction: column;
         justify-content: space-between;
 
+        a {
+            color: #007BFF; // Blue color, similar to default browser link color
+            text-decoration: none; // Removes underline
+            font-weight: bold; // Makes text bold
+            font-size: 16px; // Sets a specific font size
 
+            &:hover {
+                color: #0056b3; // Darker blue on hover
+                text-decoration: underline; // Adds underline on hover
+            }
+        }
+
+        p {
+            font-weight: bold; // Makes text bold
+            margin-bottom: 8px; // Adds space below each paragraph
+            color: #333; // Sets the text color, choose your desired color
+            font-size: 12px; // Adjusts the font size
+        }
     }
 }

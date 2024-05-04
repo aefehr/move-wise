@@ -21,7 +21,12 @@ router.get('/', async (req, res) => {
                     SELECT COUNT(*)
                     FROM real_estate_listing_2 rel
                     WHERE rel.city_id = c.id
-                ) AS housing_count
+                ) AS housing_count,
+                (
+                    SELECT COUNT(*)
+                    FROM company co
+                    WHERE co.city_id = c.id
+                ) AS jobs
             FROM city c
             JOIN uszips u ON c.city = u.city AND c.state = u.state_name
             WHERE EXISTS (
@@ -29,7 +34,6 @@ router.get('/', async (req, res) => {
                 FROM fortune_1000 f
                 WHERE f.city_id = c.id
             )
-            
             GROUP BY c.city, c.id, c.state
             HAVING housing_count > 0;
         `;

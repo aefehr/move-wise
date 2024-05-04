@@ -3,7 +3,6 @@ import { Marker, Popup } from 'react-leaflet'
 import { Link } from 'react-router-dom'
 import UnsplashImageFetcher from '../UnsplashImgFetcher/UnsplashImgFetcher';
 import capitalizeFirstLetter from '../../../assets/helper';
-
 function Pin({ item, pin_city = false }) { // Added pin_city as a prop
     console.log("Pin item:", item); // Check the item data
 
@@ -23,11 +22,12 @@ function Pin({ item, pin_city = false }) { // Added pin_city as a prop
                     <div className="popupContainer">
                         <UnsplashImageFetcher keyword={`city ${item.city}`} alt="" />
                         <div className="textContainer">
-                            <Link to={`/city_specific/${item.id}`}>{item.city}</Link>
+                            <Link to={`${item.id}`}>{capitalizeFirstLetter(item.city)}</Link>
                             <div>
-                                <p>{item.state}</p>
-                                <p>Employers: {item.employer_count}</p>
+                                <p>{capitalizeFirstLetter(item.state)}</p>
+                                <p>Major employers: {item.employer_count}</p>
                                 <p>Houses: {item.housing_count}</p>
+                                <p>Jobs: {item.jobs}</p>
                             </div>
 
                         </div>

@@ -3,5 +3,4 @@ function capitalizeFirstLetter(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-module.exports = capitalizeFirstLetter; // For Node.js
 export default capitalizeFirstLetter; // For ES6 modules in React
