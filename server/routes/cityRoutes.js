@@ -55,29 +55,7 @@ router.get('/city_company_stats/:city/:state', async (req, res) => {
     const { city, state } = req.params;
     try {
         const sql = `
-            SELECT
-                c.city,
-                c.state,
-                COUNT(*) AS total_companies,
-                (
-                    SELECT GROUP_CONCAT(industry ORDER BY count DESC SEPARATOR ', ')
-                    FROM (
-                        SELECT industry, COUNT(*) AS count
-                        FROM company
-                        WHERE city_id = c.id
-                        GROUP BY industry
-                        ORDER BY count DESC
-                        LIMIT 5
-                    ) AS subquery
-                ) AS top_industries
-            FROM
-                city c
-            JOIN
-                company co ON c.id = co.city_id
-            WHERE
-                c.city = ? AND c.state = ?
-            GROUP BY
-                c.city, c.state;
+            SELECT * FROM city_statistics WHERE city = ? AND state = ?;
         `;
 
         const [results] = await pool.query(sql, [city, state]);
