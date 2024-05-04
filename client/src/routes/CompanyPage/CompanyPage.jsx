@@ -11,7 +11,12 @@ function CompanyPage() {
         fetch(`http://localhost:8000/api/companies/fortune_1000_company_info/${company_name}`)
           .then(res => res.json())
           .then(resJson => setCompanyData(resJson))
-          .catch(error => console.error('Error fetching company data:', error));
+          .catch(error => {
+            console.error('Error fetching company data:', error);
+            alert('An error occurred while fetching company data. Redirecting to another page.');
+            // Redirect to another page
+            window.location.href = '/';
+          });
       }, [company_name]);
 
     return (
