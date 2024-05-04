@@ -8,18 +8,30 @@ router.get('/', async (req, res) => {
         const query = `
             SELECT
                 c.city,
-                MAX(c.id) AS id,
-                MAX(c.state) AS state,
+                c.id,
+                c.state,
                 MAX(u.lat) AS latitude,
-                MAX(u.lng) AS longitude
+                MAX(u.lng) AS longitude,
+                (
+                    SELECT COUNT(*)
+                    FROM fortune_1000 f
+                    WHERE f.city_id = c.id
+                ) AS employer_count,
+                (
+                    SELECT COUNT(*)
+                    FROM real_estate_listing_2 rel
+                    WHERE rel.city_id = c.id
+                ) AS housing_count
             FROM city c
             JOIN uszips u ON c.city = u.city AND c.state = u.state_name
             WHERE EXISTS (
                 SELECT 1
                 FROM fortune_1000 f
-                WHERE c.id = f.city_id
+                WHERE f.city_id = c.id
             )
-            GROUP BY c.city;
+            
+            GROUP BY c.city, c.id, c.state
+            HAVING housing_count > 0;
         `;
         const [results] = await pool.query(query);
         res.json(results);
@@ -30,6 +42,27 @@ router.get('/', async (req, res) => {
 });
 
 /* Routes for specific city page */
+// Returns real estate listings for a specific city
+router.get('/real_estate_listings/:cityId', async (req, res) => {
+    const { cityId } = req.params;
+    try {
+        const query = `
+            SELECT rel.bed, rel.bath, rel.acre_lot, rel.zip_code, rel.price
+            FROM real_estate_listing_2 rel
+            WHERE rel.city_id = ?
+            ORDER BY rel.price DESC;
+        `;
+        const [results] = await pool.query(query, [cityId]);
+        if (results.length > 0) {
+            res.json(results);
+        } else {
+            res.status(404).send('No real estate listings found for the specified city ID.');
+        }
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching real estate listings');
+    }
+});
 
 /* Returns the names of all Fortune 1000 companies headquartered in a specific city */
 router.get('/city_fortune_1000_companies/:city/:state', async (req, res) => {
@@ -119,7 +152,7 @@ router.get('/city_col_stats/:city/:state', async (req, res) => {
         }
     } catch (error) {
         console.error('Database query error:', error);
-        res.status(500). send('Server error occurred while fetching cost of living data');
+        res.status(500).send('Server error occurred while fetching cost of living data');
     }
 });
 
@@ -142,7 +175,7 @@ router.get('/city_rel_stats/:city/:state', async (req, res) => {
         }
     } catch (error) {
         console.error('Database query error:', error);
-        res.status(500). send('Server error occurred while fetching real estate data');
+        res.status(500).send('Server error occurred while fetching real estate data');
     }
 });
 
@@ -176,10 +209,6 @@ router.get('/city_company_rank/:city/:state', async (req, res) => {
         res.status(500).send('Server error occurred while fetching company rank data');
     }
 });
-
-
-
-
 
 
 /* Routes for City Directory page */
