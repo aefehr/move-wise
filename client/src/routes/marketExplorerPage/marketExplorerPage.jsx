@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import sectorData from './unique_sectors.json'; // Import sector data
+import "./marketExplorerPage.scss";
 
 function MarketExplorerPage() {
     const [sector, setSector] = useState(sectorData.UniqueSectors[0]); // Default to first sector
@@ -30,10 +31,10 @@ function MarketExplorerPage() {
     };
 
     return (
-        <div>
-            <div>
-                <h2>Show me the top 5 cities with the lowest cost of living index where top employers are in the 
-                    <select value={sector} onChange={e => setSector(e.target.value)} style={{ margin: '0 5px' }}>
+        <div className="market-explorer">
+            <div className="chat-bubble question">
+                <h2>Show me the top 5 cities with the lowest cost of living index where top employers are in the
+                    <select value={sector} onChange={e => setSector(e.target.value)}>
                         {sectorData.UniqueSectors.map((sector, index) => (
                             <option key={index} value={sector}>{sector}</option>
                         ))}
@@ -41,15 +42,18 @@ function MarketExplorerPage() {
                     sector
                 </h2>
                 <button onClick={fetchCitiesBySector}>Fetch Cities</button>
+            </div>
+            <div className="chat-bubble answer">
                 <ul>
                     {citiesBySector.map((city, index) => (
                         <li key={index}>{city.city}, {city.state} - Avg. COL Index: {city.avg_col_index}</li>
                     ))}
                 </ul>
             </div>
-            <div>
-                <h2>Show top 5 cities with the lowest average real estate prices, ordered by 
-                    <select value={indexChoice} onChange={e => setIndexChoice(e.target.value)} style={{ margin: '0 5px' }}>
+
+            <div className="chat-bubble question">
+                <h2>Show top 5 cities with the lowest average real estate prices, ordered by
+                    <select value={indexChoice} onChange={e => setIndexChoice(e.target.value)}>
                         <option value="Cost of Living Index">Cost of Living Index</option>
                         <option value="Rent Index">Rent Index</option>
                         <option value="Groceries Index">Groceries Index</option>
@@ -58,20 +62,29 @@ function MarketExplorerPage() {
                     </select>
                 </h2>
                 <button onClick={fetchCitiesByIndex}>Fetch Cities</button>
+            </div>
+            <div className="chat-bubble answer">
                 <ul>
                     {citiesByIndex.map((city, index) => (
                         <li key={index}>{city.city}, {city.state} - Average Real Estate Price: ${city.average_real_estate_price} - {indexChoice}: {city.selected_index_value}</li>
                     ))}
                 </ul>
             </div>
-            <h2>Top 10 cities with the highest number of startups (new companies in past 5 years)</h2>
-            <ul>
-                {topStartupCities.map((city, index) => (
-                    <li key={index}>{city.city}, {city.state} - New Startups: {city.total_new_startups}, Popular Industries: {city.popular_industries}</li>
-                ))}
-            </ul>
+
+            <div className="chat-bubble question">
+                <h2>Top 10 cities with the highest number of startups (new companies in past 5 years)</h2>
+            </div>
+            <div className="chat-bubble answer">
+                <ul>
+                    {topStartupCities.map((city, index) => (
+                        <li key={index}>{city.city}, {city.state} - New Startups: {city.total_new_startups}, Popular Industries: {city.popular_industries}</li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
+
+
 }
 
 export default MarketExplorerPage;
