@@ -19,10 +19,10 @@ function Card({ item }) {
                 <h2 className="title">
                     <Link to={`/${item.id}`}>{getRandomDescription()}</Link>
                 </h2>
-                <p className="address">
+                {/* <p className="address">
                     <img src="/pin.png" alt="" />
                     <span>{item.address}</span>
-                </p>
+                </p> */}
 
                 <p className="price">$ {item.price}</p>
 
@@ -30,12 +30,12 @@ function Card({ item }) {
                     <div className="features">
                         <div className="feature">
                             <img src="/bed.png" alt="" />
-                            <span>{item.bedroom} bedroom</span>
+                            <span>{item.bed} bedroom</span>
                         </div>
 
                         <div className="feature">
                             <img src="/bath.png" alt="" />
-                            <span>{item.bathroom} bathroom</span>
+                            <span>{item.bath} bathroom</span>
                         </div>
                     </div>
                 </div>

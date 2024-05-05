@@ -21,6 +21,9 @@ function CityPage() {
     const [rel_stats, setRelStats] = useState(null); // Initialize as null
     const [company_rank_stats, setCompanyRankStats] = useState(null); // Initialize as null
 
+    const [realEstateListings, setRealEstateListings] = useState([]);
+
+
     useEffect(() => {
         fetch(`http://localhost:8000/api/cities/city_fortune_1000_companies/${city}/${state}`)
             .then(res => res.json())
@@ -71,6 +74,16 @@ function CityPage() {
                 // Redirect to another page
                 window.location.href = '/';
             });
+        // real estate data
+        fetch(`http://localhost:8000/api/cities/rel_listings/${city}/${state}`)
+            .then(res => res.json())
+            .then(data => {
+                setRealEstateListings(data);
+            })
+            .catch(error => {
+                console.error('Error fetching real estate listings:', error);
+                alert('An error occurred while fetching real estate listings.');
+            });
     }, [city, state]);
 
 
@@ -80,7 +93,7 @@ function CityPage() {
                 <Tab label="Real Estate" value="realEstate" />
                 <Tab label="City Information" value="cityInfo" />
             </Tabs>
-            {tabValue === 'realEstate' && <ListPage />}
+            {tabValue === 'realEstate' && <ListPage listings={realEstateListings} />}
             {tabValue === 'cityInfo' && (
                 <Box sx={{ display: 'flex', height: 'calc(100vh - 48px)' }}> {/* Adjust height to account for tab height */}
                     <UnsplashImageFetcher keyword={city} />

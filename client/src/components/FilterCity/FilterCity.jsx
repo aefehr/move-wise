@@ -4,7 +4,7 @@ import Tabs from '@mui/material/Tabs';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import Grid from '@mui/material/Grid'
 import Tooltip from '@mui/material/Tooltip';
 import './FilterCity.scss';
 
@@ -23,6 +23,20 @@ function FilterCity({ onFilterChange, onShowTop10 }) {
             MajorEmployersCount: '',
         }
     });
+
+    // Define tooltips based on the filter type
+    const tooltips = {
+        living: {
+            City: "Matches exact city name.",
+            State: "Matches exact state name.",
+            HousingCount: "Filter for housing counts greater than this value.",
+            AverageHousePrice: "Filter for average house prices less than this value."
+        },
+        employment: {
+            JobsCount: "Filter for job counts greater than this value.",
+            MajorEmployersCount: "Filter for major employer counts greater than this value."
+        }
+    };
 
     const handleFilterChange = (tab, prop) => (event) => {
         setFilters({
@@ -44,7 +58,7 @@ function FilterCity({ onFilterChange, onShowTop10 }) {
             <Grid container className="filterGrid">
                 <Box className="filterItems">
                     {Object.entries(filters[activeTab]).map(([key, value]) => (
-                        <Tooltip title={`Enter ${key}`} key={key}>
+                        <Tooltip title={tooltips[activeTab][key]} key={key}>
                             <TextField
                                 label={key.replace(/([A-Z])/g, ' $1').trim()}
                                 variant="outlined"

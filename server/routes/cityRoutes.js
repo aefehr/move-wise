@@ -52,20 +52,41 @@ router.get('/', async (req, res) => {
 
 /* Routes for specific city page */
 // Returns real estate listings for a specific city
-router.get('/real_estate_listings/:cityId', async (req, res) => {
-    const { cityId } = req.params;
+router.get('/rel_listings/:city/:state', async (req, res) => {
+    const { city, state } = req.params;
     try {
         const query = `
-            SELECT rel.bed, rel.bath, rel.acre_lot, rel.zip_code, rel.price
+           SELECT
+                MAX(rel.city) AS city,
+                MAX(rel.state) AS state,
+                MAX(rel.bed) AS bed,
+                MAX(rel.bath) AS bath,
+                MAX(rel.acre_lot) AS acre_lot,
+                MAX(rel.zip_code) AS zip_code,
+                rel.price,
+                MAX(u.lat) AS latitude,
+                MAX(u.lng) AS longitude,
+                MIN(rel.id) AS min_id  
             FROM real_estate_listing_2 rel
-            WHERE rel.city_id = ?
+            JOIN uszips u ON rel.city = u.city AND rel.state = u.state_name
+            WHERE rel.city = ? AND rel.state = ?
+                AND rel.city IS NOT NULL
+                AND rel.state IS NOT NULL
+                AND rel.bed IS NOT NULL
+                AND rel.bath IS NOT NULL
+                AND rel.acre_lot IS NOT NULL
+                AND rel.zip_code IS NOT NULL
+                AND rel.price IS NOT NULL
+                AND u.lat IS NOT NULL
+                AND u.lng IS NOT NULL
+            GROUP BY rel.price
             ORDER BY rel.price DESC;
         `;
-        const [results] = await pool.query(query, [cityId]);
+        const [results] = await pool.query(query, [city, state]);
         if (results.length > 0) {
             res.json(results);
         } else {
-            res.status(404).send('No real estate listings found for the specified city ID.');
+            res.status(404).send('No real estate listings found for the specified city and state.');
         }
     } catch (error) {
         console.error('Database query error:', error);

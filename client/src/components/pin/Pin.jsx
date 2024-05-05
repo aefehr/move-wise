@@ -3,17 +3,33 @@ import { Marker, Popup } from 'react-leaflet'
 import { Link } from 'react-router-dom'
 import UnsplashImageFetcher from '../UnsplashImgFetcher/UnsplashImgFetcher';
 import capitalizeFirstLetter from '../../../assets/helper';
-function Pin({ item, pin_house = false }) { // Added pin_house as a prop
+
+function randomizeCoordinates(latitude, longitude, range = 0.15) {
+    // range determines how far the coordinates can vary (in degrees)
+    const lat = latitude + (Math.random() - 0.5) * range;
+    const lng = longitude + (Math.random() - 0.5) * range;
+    return [lat, lng];
+}
+
+function Pin({ item, pin_house = false }) {
+    // Utility function to randomize coordinates
+    const [latitude, longitude] = pin_house
+        ? randomizeCoordinates(item.latitude, item.longitude)
+        : [item.latitude, item.longitude];
+
+    // Added pin_house as a prop
+    // console.log("Pin item", item)
     return (
-        <Marker position={[item.latitude, item.longitude]}>
+        <Marker position={[latitude, longitude]}>
             <Popup>
                 {pin_house ? (
                     <div className="popupContainer">
-                        <img src={item.img} alt="" />
                         <div className="textContainer">
-                            <Link to={`${item.id}`}>{item.city}</Link>
-                            <span>{item.bedroom}</span>
-                            <b>$ {item.price}</b>
+                            <UnsplashImageFetcher keyword={`inside luxurious apartment`} randomize={true} alt="" />
+                            <Link to={`http://localhost:5173/1`}>Apartment</Link>
+                            <span>Beds: {item.bed}</span>
+                            <span>Baths: {item.bath}</span>
+                            <b>Price: $ {item.price}</b>
                         </div>
                     </div> // Display "Hello world" if pin_house is true
                 ) : (
