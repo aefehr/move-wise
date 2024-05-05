@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
-import sectorData from './unique_sectors.json'; // Rename the import to avoid conflict
+import sectorData from './unique_sectors.json'; // Import sector data
 
 function MarketExplorerPage() {
-    const [sector, setSector] = useState(sectorData.UniqueSectors[0]); // Use the imported data directly
-    const [indexChoice, setIndexChoice] = useState('');
+    const [sector, setSector] = useState(sectorData.UniqueSectors[0]); // Default to first sector
+    const [indexChoice, setIndexChoice] = useState('Cost of Living Index'); // Default index
     const [citiesBySector, setCitiesBySector] = useState([]);
     const [citiesByIndex, setCitiesByIndex] = useState([]);
     const [topStartupCities, setTopStartupCities] = useState([]);
@@ -32,12 +32,14 @@ function MarketExplorerPage() {
     return (
         <div>
             <div>
-                <h2>Show me the top 5 cities with the lowest cost of living index where top employers are in the selected sector</h2>
-                <select value={sector} onChange={e => setSector(e.target.value)}>
-                    {sectorData.UniqueSectors.map((sector, index) => (
-                        <option key={index} value={sector}>{sector}</option>
-                    ))}
-                </select>
+                <h2>Show me the top 5 cities with the lowest cost of living index where top employers are in the 
+                    <select value={sector} onChange={e => setSector(e.target.value)} style={{ margin: '0 5px' }}>
+                        {sectorData.UniqueSectors.map((sector, index) => (
+                            <option key={index} value={sector}>{sector}</option>
+                        ))}
+                    </select>
+                    sector
+                </h2>
                 <button onClick={fetchCitiesBySector}>Fetch Cities</button>
                 <ul>
                     {citiesBySector.map((city, index) => (
@@ -46,29 +48,31 @@ function MarketExplorerPage() {
                 </ul>
             </div>
             <div>
-                <h2>Show top 5 cities with the lowest average real estate prices ordered by selected cost of living index</h2>
-                <select value={indexChoice} onChange={e => setIndexChoice(e.target.value)}>
-                    <option value="Cost of Living Index">Cost of Living Index</option>
-                    <option value="Rent Index">Rent Index</option>
-                    <option value="Groceries Index">Groceries Index</option>
-                    <option value="Restaurant Price Index">Restaurant Price Index</option>
-                    <option value="Local Purchasing Power Index">Local Purchasing Power Index</option>
-                </select>
+                <h2>Show top 5 cities with the lowest average real estate prices, ordered by 
+                    <select value={indexChoice} onChange={e => setIndexChoice(e.target.value)} style={{ margin: '0 5px' }}>
+                        <option value="Cost of Living Index">Cost of Living Index</option>
+                        <option value="Rent Index">Rent Index</option>
+                        <option value="Groceries Index">Groceries Index</option>
+                        <option value="Restaurant Price Index">Restaurant Price Index</option>
+                        <option value="Local Purchasing Power Index">Local Purchasing Power Index</option>
+                    </select>
+                </h2>
                 <button onClick={fetchCitiesByIndex}>Fetch Cities</button>
                 <ul>
                     {citiesByIndex.map((city, index) => (
                         <li key={index}>{city.city}, {city.state} - {indexChoice}: {city.selected_index_value}</li>
                     ))}
                 </ul>
-                <h2>Top 10 cities with the highest number of startups (new companies in past 5 years)</h2>
-                <ul>
-                    {topStartupCities.map((city, index) => (
-                        <li key={index}>{city.city}, {city.state} - New Startups: {city.total_new_startups}, Popular Industries: {city.popular_industries}</li>
-                    ))}
-                </ul>
             </div>
+            <h2>Top 10 cities with the highest number of startups (new companies in past 5 years)</h2>
+            <ul>
+                {topStartupCities.map((city, index) => (
+                    <li key={index}>{city.city}, {city.state} - New Startups: {city.total_new_startups}, Popular Industries: {city.popular_industries}</li>
+                ))}
+            </ul>
         </div>
     );
 }
 
 export default MarketExplorerPage;
+
