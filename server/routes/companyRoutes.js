@@ -131,4 +131,24 @@ router.get('/most-improved-sectors', async (req, res) => {
     }
 });
 
+// Returns all unique sectors
+router.get('/fortune_1000_sectors', async (req, res) => {
+    try {
+        const query = `
+            SELECT DISTINCT sector
+            FROM fortune_1000;
+        `;
+        const [results] = await pool.query(query);
+        if (results.length > 0) {
+            const sectors = results.map(result => result.sector);
+            res.json(sectors);
+        } else {
+            res.status(404).send('No sectors found');
+        }
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Error retrieving sectors');
+    }
+});
+
 module.exports = router;
