@@ -12,8 +12,12 @@ function CompanyDirectoryPage() {
     setFilter((prev) => ({ ...prev, [name]: value }));
   };
 
+  const cleanInput = (input) => {
+    return input.trim().replace(/[^a-zA-Z0-9\s]/g, "");
+  };
+
   const handleSearch = () => {
-    fetch(`http://localhost:8000/api/companies/fortune_1000_companies?sector=${encodeURIComponent(filter.sector)}&city=${encodeURIComponent(filter.city)}&state=${encodeURIComponent(filter.state)}`)
+    fetch(`http://localhost:8000/api/companies/fortune_1000_companies?sector=${encodeURIComponent(filter.sector)}&city=${encodeURIComponent(cleanInput(filter.city.toLowerCase()))}&state=${encodeURIComponent(filter.state)}`)
       .then((res) => res.json())
       .then((data) => {
         if (data && Array.isArray(data)) {
