@@ -23,68 +23,37 @@ function CityPage() {
 
     const [realEstateListings, setRealEstateListings] = useState([]);
 
+    const [hasErrorOccurred, setHasErrorOccurred] = useState(false);
+    const [errorCount, setErrorCount] = useState(0);
 
     useEffect(() => {
-        fetch(`http://localhost:8000/api/cities/city_fortune_1000_companies/${city}/${state}`)
-            .then(res => res.json())
-            .then(resJson => setCompanyList(resJson))
-            .catch(error => {
-                console.error('Error fetching company data:', error);
-                alert('An error occurred while fetching company data. Redirecting to another page.');
-                // Redirect to another page
-                window.location.href = '/';
-            });
+      if (hasErrorOccurred) {
+        alert('An error occurred while fetching some of the data.'); 
+      }
+  }, [hasErrorOccurred]);
 
-        fetch(`http://localhost:8000/api/cities/city_company_stats/${city}/${state}`)
-            .then(res => res.json())
-            .then(resJson => setCompanyStats(resJson))
-            .catch(error => {
-                console.error('Error fetching company data:', error);
-                alert('An error occurred while fetching company data. Redirecting to another page.');
-                // Redirect to another page
-                window.location.href = '/';
-            });
+  const handleError = (error, message) => {
+      console.error(message, error);
+      setErrorCount(errorCount + 1);
+      if (!hasErrorOccurred) setHasErrorOccurred(true);
+  };
 
-        fetch(`http://localhost:8000/api/cities/city_col_stats/${city}/${state}`)
-            .then(res => res.json())
-            .then(resJson => setColStats(resJson))
-            .catch(error => {
-                console.error('Error fetching company data:', error);
-                alert('An error occurred while fetching col data. Redirecting to another page.');
-                // Redirect to another page
-                window.location.href = '/';
-            });
-
-        fetch(`http://localhost:8000/api/cities/city_rel_stats/${city}/${state}`)
-            .then(res => res.json())
-            .then(resJson => setRelStats(resJson))
-            .catch(error => {
-                console.error('Error fetching company data:', error);
-                alert('An error occurred while fetching rel data. Redirecting to another page.');
-                // Redirect to another page
-                window.location.href = '/';
-            });
-
-        fetch(`http://localhost:8000/api/cities/city_company_rank/${city}/${state}`)
-            .then(res => res.json())
-            .then(resJson => setCompanyRankStats(resJson))
-            .catch(error => {
-                console.error('Error fetching company data:', error);
-                alert('An error occurred while fetching company rank data. Redirecting to another page.');
-                // Redirect to another page
-                window.location.href = '/';
-            });
-        // real estate data
-        fetch(`http://localhost:8000/api/cities/rel_listings/${city}/${state}`)
-            .then(res => res.json())
-            .then(data => {
-                setRealEstateListings(data);
-            })
-            .catch(error => {
-                console.error('Error fetching real estate listings:', error);
-                alert('An error occurred while fetching real estate listings.');
-            });
-    }, [city, state]);
+  useEffect(() => {
+    Promise.all([
+        fetch(`http://localhost:8000/api/cities/city_fortune_1000_companies/${city}/${state}`).then(res => res.json()).then(setCompanyList).catch(error => handleError(error, 'Error fetching company data')),
+        fetch(`http://localhost:8000/api/cities/city_company_stats/${city}/${state}`).then(res => res.json()).then(setCompanyStats).catch(error => handleError(error, 'Error fetching company stats')),
+        fetch(`http://localhost:8000/api/cities/city_col_stats/${city}/${state}`).then(res => res.json()).then(setColStats).catch(error => handleError(error, 'Error fetching col stats')),
+        fetch(`http://localhost:8000/api/cities/city_rel_stats/${city}/${state}`).then(res => res.json()).then(setRelStats).catch(error => handleError(error, 'Error fetching real estate stats')),
+        fetch(`http://localhost:8000/api/cities/city_company_rank/${city}/${state}`).then(res => res.json()).then(setCompanyRankStats).catch(error => handleError(error, 'Error fetching company rank stats')),
+        fetch(`http://localhost:8000/api/cities/rel_listings/${city}/${state}`).then(res => res.json()).then(setRealEstateListings).catch(error => handleError(error, 'Error fetching real estate listings'))
+    ]).then(() => {
+        // After all fetches are complete, check if any data indicates the city exists
+        if (!company_list && !company_stats && !col_stats && !rel_stats && !company_rank_stats) {
+            alert('No Such City. Redirecting to home page.');
+            window.location.href = '/';
+        }
+    });
+}, [city, state]); // Depend on city and state to rerun when they change
 
 
     return (
