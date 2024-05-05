@@ -336,4 +336,18 @@ router.get('/top_cities_most_new_companies', async (req, res) => {
         res.status(500).send('Server error occurred while fetching top cities with most new companies');
     }
 });
+
+router.get('/all_states', async (req, res) => {
+    try {
+        const query = `
+            SELECT DISTINCT state FROM city;
+        `;
+        const [results] = await pool.query(query);
+        res.json(results);
+    } catch (error) {
+        console.error('Database query error:', error);
+        res.status(500).send('Server error occurred while fetching states');
+    }
+});
+
 module.exports = router;
