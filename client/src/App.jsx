@@ -12,6 +12,7 @@ import GeneralCityPage from "./routes/generalCityPage/generalCityPage";
 
 import CityPage from "./routes/CityPage/CityPage";
 import CompanyPage from "./routes/CompanyPage/CompanyPage";
+import CompanyDirectoryPage from "./routes/CompanyDirectoryPage/CompanyDirectoryPage";
 
 import MarketExplorerPage from "./routes/marketExplorerPage/marketExplorerPage";
 
@@ -44,6 +45,10 @@ function App() {
                 {
                     path: "/companies/:company_name", // Company page route
                     element: <CompanyPage />
+                },
+                {
+                    path: "/companies", // Company page route
+                    element: <CompanyDirectoryPage />
                 },
                 {
                     path: "/market_explorer", // Market Explorer page route
