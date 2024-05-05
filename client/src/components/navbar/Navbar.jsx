@@ -15,7 +15,7 @@ function Navbar() {
                 <a href="/">Home</a>
                 <a href="/cities">Cities</a>
                 <a href="/companies">Companies</a>
-                <a href="/market">Market Explorer</a>
+                <a href="/market_explorer">Market Explorer</a>
             </div>
             <div className="right">
                 {/* <a href="/">Sign in</a>
@@ -31,7 +31,7 @@ function Navbar() {
                     <a href="/">Home</a>
                     <a href="/cities">Cities</a>
                     <a href="/companies">Companies</a>
-                    <a href="/">Market Explorer</a>
+                    <a href="/market_explorer">Market Explorer</a>
                     {/* <a href="/">Sign in</a>
                     <a href="/">Sign up</a> */}
                 </div>
