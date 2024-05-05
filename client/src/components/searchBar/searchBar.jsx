@@ -32,11 +32,19 @@ function SearchBar() {
                 alert('Please select a state.');
                 return; // Stop the form submission
             }
+            if (!query.input) {
+                alert('Please enter a city.');
+                return; // Stop the form submission
+            }
             const lowerCaseInput = input.toLowerCase();
             const searchUrl = `/city_info/${lowerCaseInput}/${query.state}`;
             window.location.href = searchUrl;
         } else if (query.type === "Companies") {
             const searchUrl = `/companies/${input}`;
+            if (!query.input) {
+                alert('Please enter a company name.');
+                return; // Stop the form submission
+            }
             window.location.href = searchUrl;
         }
     };
