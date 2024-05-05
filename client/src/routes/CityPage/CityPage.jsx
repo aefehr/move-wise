@@ -115,6 +115,8 @@ function CityPage() {
                         <h2>Company Statistics</h2>
                         <p><strong>Number of Companies:</strong> {company_stats && company_stats.total_companies}</p>
                         <p><strong>Top 5 Industries:</strong> {company_stats && company_stats.top_industries}</p>
+                        <p><strong>Average Founding Year:</strong> {company_stats.average_founding_year}</p>
+                        <p><strong>Companies Founded in Last 2 Years:</strong> {company_stats.companies_founded_last_2_years}</p>
                         <p><strong>City Rank by Number of Companies:</strong> {company_rank_stats && company_rank_stats.city_rank}</p>
                         <br />
                         <h2>Fortune 1000 companies in this city:</h2>

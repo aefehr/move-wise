@@ -117,7 +117,8 @@ router.get('/city_fortune_1000_companies/:city/:state', async (req, res) => {
 });
 
 // GET /city_company_stats/:city/:state
-// Returns total number of companies in specific city and top 5 most popular industries
+// Returns total number of companies in the city, top 5 most popular industries in the city, average founding year 
+// of companies in the city, and how many companies have been founded in the past two years 
 router.get('/city_company_stats/:city/:state', async (req, res) => {
     const { city, state } = req.params;
     try {
