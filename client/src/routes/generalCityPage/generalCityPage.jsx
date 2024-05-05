@@ -55,7 +55,7 @@ function GeneralCityPage() {
         <div className='generalCityPage'>
             <FilterCity onFilterChange={handleCityFilter} onShowTop10={handleShowTop10} />
             <div className='mapContainer'>
-                <Map items={filteredCities} latitude={39.8283} longitude={-98.5795} zoom={5} />
+                <Map items={filteredCities} latitude={39.8283} longitude={-98.5795} zoom={5} pin_house={false} />
             </div>
         </div>
     );
