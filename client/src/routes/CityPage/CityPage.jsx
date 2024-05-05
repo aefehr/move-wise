@@ -38,6 +38,9 @@ function CityPage() {
             const responses = await Promise.all(endpoints.map(url => fetch(url)));
             const dataPromises = responses.map(res => {
               if (!res.ok) {
+                if (res.status === 404) {
+                    throw new Error('City not found');
+                }
                 throw new Error(`HTTP status ${res.status}`);
               }
               return res.json();
