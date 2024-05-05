@@ -1,22 +1,39 @@
 import './pin.scss'
 import { Marker, Popup } from 'react-leaflet'
 import { Link } from 'react-router-dom'
-
-function Pin({ item }) {
-    console.log("Pin item:", item); // Check the item data
+import UnsplashImageFetcher from '../UnsplashImgFetcher/UnsplashImgFetcher';
+import capitalizeFirstLetter from '../../../assets/helper';
+function Pin({ item, pin_city = false }) { // Added pin_city as a prop
     return (
         <Marker position={[item.latitude, item.longitude]}>
             <Popup>
-                <div className="popupContainer">
-                    <img src={item.img} alt="" />
-                    <div className="textContainer">
-                        <Link to={`/${item.id}`}>{item.city}</Link>
-                        <span>{item.bedroom}</span>
-                        <b>$ {item.price}</b>
+                {pin_city ? (
+                    <div className="popupContainer">
+                        <img src={item.img} alt="" />
+                        <div className="textContainer">
+                            <Link to={`/${item.id}`}>{item.city}</Link>
+                            <span>{item.bedroom}</span>
+                            <b>$ {item.price}</b>
+                        </div>
+                    </div> // Display "Hello world" if pin_city is true
+                ) : (
+                    <div className="popupContainer">
+                        <UnsplashImageFetcher keyword={`city ${item.city}`} alt="" />
+                        <div className="textContainer">
+                            <Link to={`${item.id}`}>{capitalizeFirstLetter(item.city)}</Link>
+                            <div>
+                                <h3>{capitalizeFirstLetter(item.state)}</h3>
+                                <p>Major employers: {item.employer_count}</p>
+                                <p>Houses: {item.housing_count}</p>
+                                <p>Jobs: {item.jobs}</p>
+                                <p>Average house price: $ {Math.round(item.average_house_price)}</p>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
+                )}
             </Popup>
-        </Marker>
+        </Marker >
     )
 }
 
