@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import './listPage.scss';
 import Card from "../../components/card/Card";
 import Map from "../../components/map/Map";
-import FilterListing from "../../components/FilterListing/FilterListing";
+import FilterListing from "../../components/filterListing/FilterListing";
 
 function ListPage({ listings }) {
     const [filters, setFilters] = useState({});
