@@ -13,6 +13,8 @@ import GeneralCityPage from "./routes/generalCityPage/generalCityPage";
 import CityPage from "./routes/CityPage/CityPage";
 import CompanyPage from "./routes/CompanyPage/CompanyPage";
 
+import MarketExplorerPage from "./routes/marketExplorerPage/marketExplorerPage";
+
 function App() {
     const router = createBrowserRouter([
         {
@@ -42,8 +44,11 @@ function App() {
                 {
                     path: "/companies/:company_name", // Company page route
                     element: <CompanyPage />
+                },
+                {
+                    path: "/market_explorer", // Market Explorer page route
+                    element: <MarketExplorerPage />
                 }
-
             ]
         },
     ]);
