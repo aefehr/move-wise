@@ -12,10 +12,15 @@ function CompanyPage() {
           .then(res => res.json())
           .then(resJson => setCompanyData(resJson))
           .catch(error => {
-            console.error('Error fetching company data:', error);
-            alert('An error occurred while fetching company data. Redirecting to another page.');
-            // Redirect to another page
+            window.console.error('Error fetching company data:', error);
+            if (error.message.includes('Company not found')) {
+                alert('Company not found. Redirecting to another page.');
+            } else {
+                alert('An error occurred while fetching company data. Redirecting to another page.' + error);
+            }
             window.location.href = '/';
+            // Redirect to another page
+            
           });
       }, [company_name]);
 

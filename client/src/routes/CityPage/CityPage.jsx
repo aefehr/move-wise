@@ -24,7 +24,6 @@ function CityPage() {
     const [realEstateListings, setRealEstateListings] = useState([]);
 
     const [hasErrorOccurred, setHasErrorOccurred] = useState(false);
-    const [errorCount, setErrorCount] = useState(0);
 
     useEffect(() => {
       if (hasErrorOccurred) {
@@ -34,7 +33,6 @@ function CityPage() {
 
   const handleError = (error, message) => {
       console.error(message, error);
-      setErrorCount(errorCount + 1);
       if (!hasErrorOccurred) setHasErrorOccurred(true);
   };
 
