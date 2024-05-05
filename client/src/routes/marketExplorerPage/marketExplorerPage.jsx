@@ -60,7 +60,7 @@ function MarketExplorerPage() {
                 <button onClick={fetchCitiesByIndex}>Fetch Cities</button>
                 <ul>
                     {citiesByIndex.map((city, index) => (
-                        <li key={index}>{city.city}, {city.state} - {indexChoice}: {city.selected_index_value}</li>
+                        <li key={index}>{city.city}, {city.state} - Average Real Estate Price: ${city.average_real_estate_price} - {indexChoice}: {city.selected_index_value}</li>
                     ))}
                 </ul>
             </div>
