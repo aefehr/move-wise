@@ -23,35 +23,53 @@ function CityPage() {
 
     const [realEstateListings, setRealEstateListings] = useState([]);
 
-    const [hasErrorOccurred, setHasErrorOccurred] = useState(false);
-
     useEffect(() => {
-      if (hasErrorOccurred) {
-        alert('An error occurred while fetching some of the data.'); 
-      }
-  }, [hasErrorOccurred]);
-
-  const handleError = (error, message) => {
-      console.error(message, error);
-      if (!hasErrorOccurred) setHasErrorOccurred(true);
-  };
-
-  useEffect(() => {
-    Promise.all([
-        fetch(`http://localhost:8000/api/cities/city_fortune_1000_companies/${city}/${state}`).then(res => res.json()).then(setCompanyList).catch(error => handleError(error, 'Error fetching company data')),
-        fetch(`http://localhost:8000/api/cities/city_company_stats/${city}/${state}`).then(res => res.json()).then(setCompanyStats).catch(error => handleError(error, 'Error fetching company stats')),
-        fetch(`http://localhost:8000/api/cities/city_col_stats/${city}/${state}`).then(res => res.json()).then(setColStats).catch(error => handleError(error, 'Error fetching col stats')),
-        fetch(`http://localhost:8000/api/cities/city_rel_stats/${city}/${state}`).then(res => res.json()).then(setRelStats).catch(error => handleError(error, 'Error fetching real estate stats')),
-        fetch(`http://localhost:8000/api/cities/city_company_rank/${city}/${state}`).then(res => res.json()).then(setCompanyRankStats).catch(error => handleError(error, 'Error fetching company rank stats')),
-        fetch(`http://localhost:8000/api/cities/rel_listings/${city}/${state}`).then(res => res.json()).then(setRealEstateListings).catch(error => handleError(error, 'Error fetching real estate listings'))
-    ]).then(() => {
-        // After all fetches are complete, check if any data indicates the city exists
-        if (!company_list && !company_stats && !col_stats && !rel_stats && !company_rank_stats) {
-            alert('No Such City. Redirecting to home page.');
+        const fetchData = async () => {
+          try {
+            const endpoints = [
+              `http://localhost:8000/api/cities/city_fortune_1000_companies/${city}/${state}`,
+              `http://localhost:8000/api/cities/city_company_stats/${city}/${state}`,
+              `http://localhost:8000/api/cities/city_col_stats/${city}/${state}`,
+              `http://localhost:8000/api/cities/city_rel_stats/${city}/${state}`,
+              `http://localhost:8000/api/cities/city_company_rank/${city}/${state}`,
+              `http://localhost:8000/api/cities/rel_listings/${city}/${state}`
+            ];
+      
+            const responses = await Promise.all(endpoints.map(url => fetch(url)));
+            const dataPromises = responses.map(res => {
+              if (!res.ok) {
+                throw new Error(`HTTP status ${res.status}`);
+              }
+              return res.json();
+            });
+      
+            const [
+              companyListData,
+              companyStatsData,
+              colStatsData,
+              relStatsData,
+              companyRankStatsData,
+              realEstateListingsData
+            ] = await Promise.all(dataPromises);
+      
+            setCompanyList(companyListData);
+            setCompanyStats(companyStatsData);
+            setColStats(colStatsData);
+            setRelStats(relStatsData);
+            setCompanyRankStats(companyRankStatsData);
+            setRealEstateListings(realEstateListingsData);
+          } catch (error) {
+            console.error(error);
+            alert(`An error occurred: ${error.message}`);
             window.location.href = '/';
-        }
-    });
-}, [city, state]); // Depend on city and state to rerun when they change
+          }
+        };
+      
+        fetchData();
+      }, [city, state]); // Depend on city and state to rerun when they change
+      
+
+
 
 
     return (
@@ -82,8 +100,6 @@ function CityPage() {
                         <h2>Company Statistics</h2>
                         <p><strong>Number of Companies:</strong> {company_stats && company_stats.total_companies}</p>
                         <p><strong>Top 5 Industries:</strong> {company_stats && company_stats.top_industries}</p>
-                        <p><strong>Average Founding Year:</strong> {company_stats.average_founding_year}</p>
-                        <p><strong>Companies Founded in Last 2 Years:</strong> {company_stats.companies_founded_last_2_years}</p>
                         <p><strong>City Rank by Number of Companies:</strong> {company_rank_stats && company_rank_stats.city_rank}</p>
                         <br />
                         <h2>Fortune 1000 companies in this city:</h2>
