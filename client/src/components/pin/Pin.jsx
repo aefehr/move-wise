@@ -4,8 +4,6 @@ import { Link } from 'react-router-dom'
 import UnsplashImageFetcher from '../UnsplashImgFetcher/UnsplashImgFetcher';
 import capitalizeFirstLetter from '../../../assets/helper';
 function Pin({ item, pin_city = false }) { // Added pin_city as a prop
-    console.log("Pin item:", item); // Check the item data
-
     return (
         <Marker position={[item.latitude, item.longitude]}>
             <Popup>
@@ -24,10 +22,11 @@ function Pin({ item, pin_city = false }) { // Added pin_city as a prop
                         <div className="textContainer">
                             <Link to={`${item.id}`}>{capitalizeFirstLetter(item.city)}</Link>
                             <div>
-                                <p>{capitalizeFirstLetter(item.state)}</p>
+                                <h3>{capitalizeFirstLetter(item.state)}</h3>
                                 <p>Major employers: {item.employer_count}</p>
                                 <p>Houses: {item.housing_count}</p>
                                 <p>Jobs: {item.jobs}</p>
+                                <p>Average house price: $ {Math.round(item.average_house_price)}</p>
                             </div>
 
                         </div>

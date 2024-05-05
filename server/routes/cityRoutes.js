@@ -6,7 +6,7 @@ const pool = require('../database');  // Ensure the correct path to your databas
 router.get('/', async (req, res) => {
     try {
         const query = `
-            SELECT
+           SELECT
                 c.city,
                 c.id,
                 c.state,
@@ -26,7 +26,12 @@ router.get('/', async (req, res) => {
                     SELECT COUNT(*)
                     FROM company co
                     WHERE co.city_id = c.id
-                ) AS jobs
+                ) AS jobs,
+                (
+                    SELECT AVG(rel.price)
+                    FROM real_estate_listing_2 rel
+                    WHERE rel.city_id = c.id
+                ) AS average_house_price  -- New subquery to calculate the average price
             FROM city c
             JOIN uszips u ON c.city = u.city AND c.state = u.state_name
             WHERE EXISTS (

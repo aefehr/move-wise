@@ -8,19 +8,19 @@ import Grid from '@mui/material/Grid';
 import Tooltip from '@mui/material/Tooltip';
 import './FilterCity.scss';
 
-function FilterCity({ onFilterChange }) {
+function FilterCity({ onFilterChange, onShowTop10 }) {
     const [activeTab, setActiveTab] = useState('living');
+
     const [filters, setFilters] = useState({
         living: {
-            HousePrice: '',
-            HouseCount: '',
-            Name: '',
-            State: ''
+            City: '',
+            State: '',
+            HousingCount: '',
+            AverageHousePrice: ''
         },
         employment: {
-            Jobs: '',
-            MajorEmployers: '',
-            IncludeIndustry: ''
+            JobsCount: '',
+            MajorEmployersCount: '',
         }
     });
 
@@ -59,7 +59,7 @@ function FilterCity({ onFilterChange }) {
                     <Button onClick={handleSubmit} variant="contained" color="primary" fullWidth>
                         Search
                     </Button>
-                    <Button onClick={() => console.log("Showing Top 10")} variant="outlined" color="primary" fullWidth>
+                    <Button onClick={onShowTop10} variant="contained" color="secondary" fullWidth>
                         Show Top 10
                     </Button>
                 </Box>
