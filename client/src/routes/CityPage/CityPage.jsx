@@ -14,17 +14,24 @@ function CityPage() {
         setTabValue(newValue);
     };
 
+    //react hook to get city and state from URL
     const { city, state } = useParams();
-    const [company_list, setCompanyList] = useState(null); // Initialize as null
-    const [company_stats, setCompanyStats] = useState(null); // Initialize as null
-    const [col_stats, setColStats] = useState(null); // Initialize as null
-    const [rel_stats, setRelStats] = useState(null); // Initialize as null
-    const [company_rank_stats, setCompanyRankStats] = useState(null); // Initialize as null
-
+    //react hooks to store data from API
+    const [company_list, setCompanyList] = useState(null);
+    const [company_stats, setCompanyStats] = useState(null);
+    const [col_stats, setColStats] = useState(null);
+    const [rel_stats, setRelStats] = useState(null);
+    const [company_rank_stats, setCompanyRankStats] = useState(null);
     const [realEstateListings, setRealEstateListings] = useState([]);
 
+    //fetch data from API
     useEffect(() => {
         const fetchData = async () => {
+        /**
+         * Fetches city data from the server.
+         * If the city is not found, redirects to home page.
+         * If an error occurs, redirects to home page and displays an error message.
+         */
           try {
             const endpoints = [
               `http://localhost:8000/api/cities/city_fortune_1000_companies/${city}/${state}`,
@@ -39,9 +46,11 @@ function CityPage() {
             const dataPromises = responses.map(res => {
               if (!res.ok) {
                 if (res.status === 404) {
+                    // Handle 404 error, city not found
                     throw new Error('City not found');
                 }
                 throw new Error(`HTTP status ${res.status}`);
+                // Handle other HTTP errors
               }
               return res.json();
             });
@@ -83,10 +92,9 @@ function CityPage() {
             </Tabs>
             {tabValue === 'realEstate' && <ListPage listings={realEstateListings} />}
             {tabValue === 'cityInfo' && (
-                <Box sx={{ display: 'flex', height: 'calc(100vh - 48px)' }}> {/* Adjust height to account for tab height */}
+                <Box sx={{ display: 'flex', height: 'calc(100vh - 48px)' }}>
                     <UnsplashImageFetcher keyword={city} />
                     <Box className="info-section" sx={{ flex: 1, overflowY: 'auto', padding: 2 }}>
-                        {/* Placeholder for statistics or additional info */}
                         <h1>{city.toUpperCase()}, {state.toUpperCase()}</h1>
                         <br />
                         <h2>Cost of Living</h2>

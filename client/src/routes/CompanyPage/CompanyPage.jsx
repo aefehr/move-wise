@@ -3,11 +3,20 @@ import { useParams } from 'react-router-dom';
 import './CompanyPage.scss'; 
 import { Box } from '@mui/material';
 
+/**
+ * Renders the CompanyPage component.
+ * Displays information about a specific company.
+ */
 function CompanyPage() {
     const { company_name } = useParams();
     const [companyData, setCompanyData] = useState(null); // Initialize as null
 
     useEffect(() => {
+        /**
+         * Fetches company data from the server.
+         * If the company is not found, redirects to another page.
+         * If an error occurs, redirects to another page and displays an error message.
+         */
         fetch(`http://localhost:8000/api/companies/fortune_1000_company_info/${company_name}`)
           .then(res => res.json())
           .then(resJson => setCompanyData(resJson))

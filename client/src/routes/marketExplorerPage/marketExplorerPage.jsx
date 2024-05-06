@@ -16,6 +16,9 @@ function MarketExplorerPage() {
             .catch(error => console.error('Error fetching top startup cities:', error));
     }, []);
 
+    /**
+     * Fetches cities by sector based on the selected sector.
+     */
     const fetchCitiesBySector = () => {
         fetch(`http://localhost:8000/api/market/lcol_cities_by_sector?sector=${encodeURIComponent(sector)}`)
             .then(response => response.json())
@@ -23,6 +26,9 @@ function MarketExplorerPage() {
             .catch(error => console.error('Error fetching cities by sector:', error));
     };
 
+    /**
+     * Fetches cities by index based on the selected index choice.
+     */
     const fetchCitiesByIndex = () => {
         fetch(`http://localhost:8000/api/market/low_home_price_cities_by_index?indexChoice=${encodeURIComponent(indexChoice)}`)
             .then(response => response.json())
@@ -83,8 +89,6 @@ function MarketExplorerPage() {
             </div>
         </div>
     );
-
-
 }
 
 export default MarketExplorerPage;

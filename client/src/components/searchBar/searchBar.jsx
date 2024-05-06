@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react';
 
 const types = ["Cities", "Companies"];
 
+/**
+ * SearchBar component for searching cities or companies.
+ */
 function SearchBar() {
     const [states, setStates] = useState([]);
     const [query, setQuery] = useState({
@@ -11,19 +14,36 @@ function SearchBar() {
         state: "",
     });
 
+    /**
+     * Switches the search type between "Cities" and "Companies".
+     * @param {string} val - The new search type.
+     */
     const switchType = (val) => {
         setQuery((prev) => ({ ...prev, type: val }));
     };
 
+    /**
+     * Handles the input change event.
+     * @param {object} e - The input change event object.
+     */
     const handleInputChange = (e) => {
         const { name, value } = e.target;
         setQuery((prev) => ({ ...prev, [name]: value }));
     };
 
+    /**
+     * Cleans the input by removing special characters.
+     * @param {string} input - The input string to clean.
+     * @returns {string} - The cleaned input string.
+     */
     const cleanInput = (input) => {
         return input.trim().replace(/[^a-zA-Z0-9\s]/g, "");
     };
 
+    /**
+     * Handles the form submission event.
+     * @param {object} event - The form submission event object.
+     */
     const handleSubmit = (event) => {
         event.preventDefault();
         const input = cleanInput(query.input);
@@ -50,6 +70,10 @@ function SearchBar() {
     };
 
     useEffect(() => {
+        /**
+         * Fetches all states from the server.
+         * If an error occurs, redirects to home page and displays an error message.
+         */
         fetch("http://localhost:8000/api/cities/all_states")
         .then((res) => res.json())
         .then((data) => {

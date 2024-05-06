@@ -2,7 +2,14 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../database'); // Ensure the path to your database module is correct
 
-// Returns the top 5 cities with the lowest cost of living index where top employers are in the specified sector
+/**
+ * Returns the top 5 cities with the lowest cost of living index where top employers are in the specified sector
+ * @param {string} sector - the sector of the companies
+ * @returns {Object[]} - list of cities with cost of living and top companies
+ * @throws {400} - if sector parameter is missing
+ * @throws {404} - if no data is found for the specified sector
+ * @throws {500} - if an error occurs while fetching top cities
+ */
 router.get('/lcol_cities_by_sector', async (req, res) => {
     const { sector } = req.query; // Extract sector from query parameters
 
@@ -47,6 +54,12 @@ router.get('/lcol_cities_by_sector', async (req, res) => {
 
 // Returns top 10 cities with the highest number of startups (new companies in past 5 years)
 // and their cost of living and popular industries
+/**
+ * Returns the top 10 cities with the highest number of new startups in the past 5 years
+ * @returns {Object[]} - list of cities with startup data
+ * @throws {404} - if no cities are found with significant startup activity
+ * @throws {500} - if an error occurs while fetching top startup cities
+ */
 router.get('/top_startup_cities', async (req, res) => {
     try {
         const query = `
@@ -72,7 +85,14 @@ router.get('/top_startup_cities', async (req, res) => {
     }
 });
 
-// Returns top 5 cities with the lowest average real estate prices and user-selected cost of living index
+/**
+ * Returns the top 5 cities with the lowest average real estate prices and the selected cost of living index
+ * @param {string} indexChoice - the user-selected cost of living index
+ * @returns {Object[]} - list of cities with real estate prices and selected index
+ * @throws {400} - if indexChoice parameter is missing or invalid
+ * @throws {404} - if no affordable cities are found with the selected cost of living index
+ * @throws {500} - if an error occurs while fetching top affordable cities
+ */
 router.get('/low_home_price_cities_by_index', async (req, res) => {
     const indexChoice = req.query.indexChoice;  // This will get the index from a query parameter
 

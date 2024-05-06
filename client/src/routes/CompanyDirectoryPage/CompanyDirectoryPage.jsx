@@ -1,21 +1,37 @@
 import { useEffect, useState } from 'react';
 import { Box } from '@mui/material';
 
+/**
+ * Renders the Company Directory page.
+ * @returns {JSX.Element} The Company Directory page component.
+ */
 function CompanyDirectoryPage() {
   const [companies, setCompanies] = useState([]);
   const [filter, setFilter] = useState({ sector: '', city: '', state: '' });
   const [states, setStates] = useState([]);
   const [sectors, setSectors] = useState([]);
 
+  /**
+   * Handles the input change event.
+   * @param {Event} e - The input change event.
+   */
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFilter((prev) => ({ ...prev, [name]: value }));
   };
 
+  /**
+   * Cleans the input by removing special characters.
+   * @param {string} input - The input string to clean.
+   * @returns {string} The cleaned input string.
+   */
   const cleanInput = (input) => {
     return input.trim().replace(/[^a-zA-Z0-9\s]/g, "");
   };
 
+  /**
+   * Handles the search button click event.
+   */
   const handleSearch = () => {
     fetch(`http://localhost:8000/api/companies/fortune_1000_companies?sector=${encodeURIComponent(filter.sector)}&city=${encodeURIComponent(cleanInput(filter.city.toLowerCase()))}&state=${encodeURIComponent(filter.state)}`)
       .then((res) => res.json())
@@ -24,7 +40,7 @@ function CompanyDirectoryPage() {
           setCompanies(data);
         } else {
           console.error('Unexpected API response:', data);
-          // Handle the case when the response doesn't match the expected structure
+          alert('No Matching Companies!');
         }
       })
       .catch((error) => {
@@ -32,7 +48,7 @@ function CompanyDirectoryPage() {
         alert('No Matching Companies!')
       });
   };
-
+  // Fetch states and sectors data from API
   useEffect(() => {
     fetch("http://localhost:8000/api/cities/all_states")
       .then((res) => res.json())
@@ -43,7 +59,7 @@ function CompanyDirectoryPage() {
       })
       .catch((error) => {
         console.error('Error fetching states:', error);
-        // Display an error message to the user or handle the error gracefully
+        alert('Error fetching states');
       });
 
     fetch("http://localhost:8000/api/companies/fortune_1000_sectors")
@@ -55,7 +71,7 @@ function CompanyDirectoryPage() {
       })
       .catch((error) => {
         console.error('Error fetching sectors:', error);
-        // Display an error message to the user or handle the error gracefully
+        alert('Error fetching sectors');
       });
   }, []);
 

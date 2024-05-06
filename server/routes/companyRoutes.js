@@ -4,7 +4,13 @@ const pool = require('../database'); // Adjust the path to your database configu
 
 /* Routes for specific company page */
 
-// Returns information about a specific company in Fortune 1000 list 
+/**
+ * Returns information about a specific company in Fortune 1000 list 
+ * @param {string} company_name - the name of the company
+ * @returns {Object} - company information
+ * @throws {404} - if the company is not found
+ * @throws {500} - if an error occurs while fetching the company details
+ */
 router.get('/fortune_1000_company_info/:company_name', async (req, res) => {
     const { company_name } = req.params;
     const query = `
@@ -40,6 +46,15 @@ router.get('/fortune_1000_company_info/:company_name', async (req, res) => {
 /* Routes for Company Directory */
 
 // Returns the Fortune 1000 companies by current rank with optional filters for sector or city and state
+/**
+ * Returns Fortune 1000 companies by current rank with optional filters for sector or city and state
+ * @param {string} [sector] - the sector of the company
+ * @param {string} [city] - the city where the company is located
+ * @param {string} [state] - the state where the company is located
+ * @returns {Object[]} - list of companies
+ * @throws {404} - if no matching companies are found
+ * @throws {500} - if an error occurs while fetching the top companies
+ */
 router.get('/fortune_1000_companies', async (req, res) => {
     const { sector, city, state } = req.query; // Using query parameters for optional filtering
 
@@ -87,8 +102,12 @@ router.get('/fortune_1000_companies', async (req, res) => {
     }
 });
 
-
-// Returns companies that have the most significant rank improvement
+/**
+ * Returns companies that have the most significant rank improvement
+ * @returns {Object[]} - list of companies with rank improvement
+ * @throws {404} - if no companies are found with rank improvement
+ * @throws {500} - if an error occurs while fetching most improved companies
+ */
 router.get('/most-improved-companies', async (req, res) => {
     try {
         const query = `
@@ -106,7 +125,12 @@ router.get('/most-improved-companies', async (req, res) => {
     }
 });
 
-// Returns the top 5 sectors with the most average rank improvement
+/**
+ * Returns the top 5 sectors with the most significant average rank improvement
+ * @returns {Object[]} - list of sectors with rank improvement
+ * @throws {404} - if no sectors are found with rank improvement
+ * @throws {500} - if an error occurs while fetching sector rank improvements
+ */
 router.get('/most-improved-sectors', async (req, res) => {
     try {
         const query = `
@@ -131,7 +155,12 @@ router.get('/most-improved-sectors', async (req, res) => {
     }
 });
 
-// Returns all unique sectors
+/**
+ * Returns all unique sectors in the Fortune 1000 list
+ * @returns {string[]} - list of sectors
+ * @throws {404} - if no sectors are found
+ * @throws {500} - if an error occurs while fetching sectors
+ */
 router.get('/fortune_1000_sectors', async (req, res) => {
     try {
         const query = `

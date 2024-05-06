@@ -2,7 +2,13 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../database');  // Ensure the correct path to your database connection module
 
-/* Get all cities with latitude and longitude to populate the map, only if they have a company in the fortune_1000 table */
+/**
+ * Retrieves city data including information about employers, housing, jobs, and average house price.
+ * Also includes latitude and longitude coordinates for each city.
+ * @route GET /
+ * @returns {Object[]} - Array of city data objects.
+ * @throws {Error} - If there is an error while fetching city data.
+ */
 router.get('/', async (req, res) => {
     try {
         const query = `
@@ -50,8 +56,14 @@ router.get('/', async (req, res) => {
     }
 });
 
-/* Routes for specific city page */
-// Returns real estate listings for a specific city
+/**
+ * Retrieves real estate listings for a specific city and state.
+ * @route GET /rel_listings/:city/:state
+ * @param {string} city - The name of the city.
+ * @param {string} state - The name of the state.
+ * @returns {Object[]} - Array of real estate listing objects.
+ * @throws {Error} - If there is an error while fetching real estate listings.
+ */
 router.get('/rel_listings/:city/:state', async (req, res) => {
     const { city, state } = req.params;
     try {
@@ -94,7 +106,14 @@ router.get('/rel_listings/:city/:state', async (req, res) => {
     }
 });
 
-/* Returns the names of all Fortune 1000 companies headquartered in a specific city */
+/**
+ * Returns the names of all Fortune 1000 companies headquartered in a specific city.
+ * @route GET /city_fortune_1000_companies/:city/:state
+ * @param {string} city - The name of the city.
+ * @param {string} state - The name of the state.
+ * @returns {Object[]} - Array of company names.
+ * @throws {Error} - If there is an error while fetching company data.
+ */
 router.get('/city_fortune_1000_companies/:city/:state', async (req, res) => {
     const { city, state } = req.params;
     try {
@@ -116,9 +135,14 @@ router.get('/city_fortune_1000_companies/:city/:state', async (req, res) => {
     }
 });
 
-// GET /city_company_stats/:city/:state
-// Returns total number of companies in the city, top 5 most popular industries in the city, average founding year 
-// of companies in the city, and how many companies have been founded in the past two years 
+/**
+ * Returns company statistics for a specific city and state.
+ * @route GET /city_company_stats/:city/:state
+ * @param {string} city - The name of the city.
+ * @param {string} state - The name of the state.
+ * @returns {Object} - Object containing company statistics.
+ * @throws {Error} - If there is an error while fetching company data.
+ */
 router.get('/city_company_stats/:city/:state', async (req, res) => {
     const { city, state } = req.params;
     try {
@@ -138,7 +162,14 @@ router.get('/city_company_stats/:city/:state', async (req, res) => {
     }
 });
 
-// Returns cost of living statistics for a specific city
+/**
+ * Returns cost of living statistics for a specific city and state.
+ * @route GET /city_col_stats/:city/:state
+ * @param {string} city - The name of the city.
+ * @param {string} state - The name of the state.
+ * @returns {Object} - Object containing cost of living statistics.
+ * @throws {Error} - If there is an error while fetching cost of living data.
+ */
 router.get('/city_col_stats/:city/:state', async (req, res) => {
     const { city, state } = req.params;
     try {
@@ -165,7 +196,14 @@ router.get('/city_col_stats/:city/:state', async (req, res) => {
     }
 });
 
-// Returns real estate statistics for a specific city
+/**
+ * Returns real estate statistics for a specific city and state.
+ * @route GET /city_rel_stats/:city/:state
+ * @param {string} city - The name of the city.
+ * @param {string} state - The name of the state.
+ * @returns {Object} - Object containing real estate statistics.
+ * @throws {Error} - If there is an error while fetching real estate data.
+ */
 router.get('/city_rel_stats/:city/:state', async (req, res) => {
     const { city, state } = req.params;
     try {
@@ -188,7 +226,14 @@ router.get('/city_rel_stats/:city/:state', async (req, res) => {
     }
 });
 
-// Returns the rank of the city in terms of number of companies
+/**
+ * Returns the rank of the city in terms of number of companies.
+ * @route GET /city_company_rank/:city/:state
+ * @param {string} city - The name of the city.
+ * @param {string} state - The name of the state.
+ * @returns {Object} - Object containing the city rank.
+ * @throws {Error} - If there is an error while fetching company rank data.
+ */
 router.get('/city_company_rank/:city/:state', async (req, res) => {
     const { city, state } = req.params;
     try {
@@ -219,11 +264,12 @@ router.get('/city_company_rank/:city/:state', async (req, res) => {
     }
 });
 
-
-/* Routes for City Directory page */
-
-
-/* Returns cities with the most Fortune 1000 companies */
+/**
+ * Returns 10 cities with the most Fortune 1000 companies.
+ * @route GET /top_fortune_1000_cities
+ * @returns {Object[]} - Array of city objects with company count.
+ * @throws {Error} - If there is an error while fetching top cities.
+ */
 router.get('/top_fortune_1000_cities', async (req, res) => {
     try {
         const query = `
@@ -242,7 +288,12 @@ router.get('/top_fortune_1000_cities', async (req, res) => {
     }
 });
 
-/* Returns top 10 cities with the highest COL */
+/**
+ * Returns top 10 cities with the highest cost of living.
+ * @route GET /top_cities_highest_col
+ * @returns {Object[]} - Array of city objects with cost of living index.
+ * @throws {Error} - If there is an error while fetching top cities with highest COL.
+ */
 router.get('/top_cities_highest_col', async (req, res) => {
     try {
         const sql = `
@@ -260,7 +311,12 @@ router.get('/top_cities_highest_col', async (req, res) => {
     }
 });
 
-/* Returns top 10 cities with the lowest COL */
+/** 
+ * Returns top 10 cities with the lowest cost of living.
+ * @route GET /top_cities_lowest_col
+ * @returns {Object[]} - Array of city objects with cost of living index.
+ * @throws {Error} - If there is an error while fetching top cities with lowest COL.
+*/
 router.get('/top_cities_lowest_col', async (req, res) => {
     try {
         const sql = `
@@ -278,7 +334,12 @@ router.get('/top_cities_lowest_col', async (req, res) => {
     }
 });
 
-/* Returns top 10 cities with highest average real estate price */
+/**
+ * Returns top 10 cities with the highest average real estate price.
+ * @route GET /top_cities_highest_avg_re_price
+ * @returns {Object[]} - Array of city objects with average real estate price.
+ * @throws {Error} - If there is an error while fetching top cities with highest average real estate price.
+ */
 router.get('/top_cities_highest_avg_re_price', async (req, res) => {
     try {
         const sql = `
@@ -297,7 +358,12 @@ router.get('/top_cities_highest_avg_re_price', async (req, res) => {
     }
 });
 
-/* Returns top 10 cities with lowest average real estate price */
+/**
+ * Returns top 10 cities with the lowest average real estate price.
+ * @route GET /top_cities_lowest_avg_re_price
+ * @returns {Object[]} - Array of city objects with average real estate price.
+ * @throws {Error} - If there is an error while fetching top cities with lowest average real estate price.
+ */
 router.get('/top_cities_lowest_avg_re_price', async (req, res) => {
     try {
         const sql = `
@@ -317,7 +383,12 @@ router.get('/top_cities_lowest_avg_re_price', async (req, res) => {
     }
 });
 
-/* Returns top 10 cities with the most companies founded in the last year */
+/**
+ * Returns top 10 cities with the most companies founded in the last year.
+ * @route GET /top_cities_most_new_companies
+ * @returns {Object[]} - Array of city objects with new company count.
+ * @throws {Error} - If there is an error while fetching top cities with most new companies.
+ */
 router.get('/top_cities_most_new_companies', async (req, res) => {
     try {
         const sql = `
@@ -337,6 +408,13 @@ router.get('/top_cities_most_new_companies', async (req, res) => {
     }
 });
 
+
+/**
+ * Returns the names of all states in the database.
+ * @route GET /all_states
+ * @returns {Object[]} - Array of state names.
+ * @throws {Error} - If there is an error while fetching states.
+ */
 router.get('/all_states', async (req, res) => {
     try {
         const query = `
