@@ -24,7 +24,7 @@ Frontend implemented using React (vite), backend server using NodeJS and express
 - server: contains all backend files
     - server/routes: includes all API routes and routers
 - client: contains all frontend files
-    - client/routes: contains all .jsx files corresponding to pages in the UI
+    - client/src/routes: contains all .jsx files corresponding to pages in the UI
 
 
 
