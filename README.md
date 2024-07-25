@@ -1,5 +1,5 @@
 # Move Wise
-
+![image](https://github.com/user-attachments/assets/a9a47b63-e854-44d2-887f-5d04a50faa72)
 This application is intended to provide useful information for users looking to move to a new location in search for a new job. MoveWise is a comprehensive application that integrates company performance data, city cost of living metrics, and real estate insights across U.S. regions, designed to empower job seekers in making informed relocation decisions.
 
 ## Technology
